@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { Check, Copy, Github, Loader2, Sparkles, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useStudioVisit } from "@/hooks/use-studio-visit";
 import { GithubPublishPanel } from "@/components/github-publish-panel";
 import { buildGithubPublishUrl, streamReadmeDraft } from "@/lib/readme-draft";
 
@@ -8,6 +9,7 @@ const fieldClass =
   "w-full rounded-md border border-border bg-background/70 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
 
 export function ReadmeStudio() {
+  useStudioVisit("readme");
   const [accessCode, setAccessCode] = useState("");
   const [githubOwner, setGithubOwner] = useState("alex-morgan-demo");
   const [repositoryName, setRepositoryName] = useState("signal-cache");
@@ -72,15 +74,12 @@ export function ReadmeStudio() {
           Ship better documentation with AI-powered{" "}
           <span className="relative inline-block text-primary">
             <span className="relative z-10">GitHub documentation</span>
-            <span
-              className="absolute inset-x-0 bottom-1 h-2 bg-primary/15"
-              aria-hidden="true"
-            />
+            <span className="absolute inset-x-0 bottom-1 h-2 bg-primary/15" aria-hidden="true" />
           </span>
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Automatically transform deep repository context into polished, professional
-          documentation that developers actually use.
+          Automatically transform deep repository context into polished, professional documentation
+          that developers actually use.
         </p>
         <div className="mt-6 flex items-center gap-3 font-mono text-[10px] uppercase text-muted-foreground">
           <span className="h-px w-10 bg-border" aria-hidden="true" />

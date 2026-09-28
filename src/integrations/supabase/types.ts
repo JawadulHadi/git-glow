@@ -62,6 +62,27 @@ export type Database = {
         }
         Relationships: []
       }
+      studio_visits: {
+        Row: {
+          created_at: string
+          id: string
+          page: string
+          session_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page: string
+          session_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page?: string
+          session_hash?: string
+        }
+        Relationships: []
+      }
       usage_events: {
         Row: {
           created_at: string

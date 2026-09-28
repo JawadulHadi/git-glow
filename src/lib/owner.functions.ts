@@ -4,6 +4,8 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type UsageDay = {
   day: string;
+  opens: number;
+  visitors: number;
   readme: number;
   report: number;
   publish: number;
@@ -19,6 +21,7 @@ export type OwnerOverview =
       codeSource: "panel" | "site-secret" | "none";
       codeUpdatedAt: string | null;
       totals: { readme: number; report: number; publish: number; failed: number };
+      visits: { opens: number; visitors: number; reportConversion: number };
       days: UsageDay[];
       recent: UsageEvent[];
     };
@@ -62,11 +65,39 @@ export const getOwnerOverview = createServerFn({ method: "GET" })
       .gte("created_at", since.toISOString())
       .order("created_at", { ascending: false })
       .limit(5000);
+    const { data: visits } = await supabaseAdmin
+      .from("studio_visits")
+      .select("session_hash, page, created_at")
+      .gte("created_at", since.toISOString())
+      .order("created_at", { ascending: false })
+      .limit(5000);
     const rows = events ?? [];
+    const visitRows = visits ?? [];
     const days: UsageDay[] = [];
     for (let i = 0; i < 14; i += 1) {
       const d = new Date(since.getTime() + i * 86400000);
-      days.push({ day: d.toISOString().slice(0, 10), readme: 0, report: 0, publish: 0, failed: 0 });
+      days.push({
+        day: d.toISOString().slice(0, 10),
+        opens: 0,
+        visitors: 0,
+        readme: 0,
+        report: 0,
+        publish: 0,
+        failed: 0,
+      });
+    }
+    const visitorHashes = new Set<string>();
+    for (const visit of visitRows) {
+      visitorHashes.add(visit.session_hash);
+      const day = days.find((d) => d.day === visit.created_at.slice(0, 10));
+      if (day) day.opens += 1;
+    }
+    for (const day of days) {
+      day.visitors = new Set(
+        visitRows
+          .filter((visit) => visit.created_at.slice(0, 10) === day.day)
+          .map((visit) => visit.session_hash),
+      ).size;
     }
     const totals = { readme: 0, report: 0, publish: 0, failed: 0 };
     for (const row of rows) {
@@ -89,6 +120,13 @@ export const getOwnerOverview = createServerFn({ method: "GET" })
           : "none",
       codeUpdatedAt: code.updatedAt,
       totals,
+      visits: {
+        opens: visitRows.length,
+        visitors: visitorHashes.size,
+        reportConversion: visitorHashes.size
+          ? Math.round((totals.report / visitorHashes.size) * 1000) / 10
+          : 0,
+      },
       days,
       recent: rows.slice(0, 20).map((r) => ({ kind: r.kind, ok: r.ok, createdAt: r.created_at })),
     };

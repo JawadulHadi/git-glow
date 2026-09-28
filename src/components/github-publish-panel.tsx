@@ -64,6 +64,7 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
   const [includeReadme, setIncludeReadme] = useState(Boolean(readme));
   const [includeBrand, setIncludeBrand] = useState(true);
   const [includeAppDocs, setIncludeAppDocs] = useState(false);
+  const [includeWiki, setIncludeWiki] = useState(true);
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
   const [topics, setTopics] = useState("");
@@ -78,7 +79,9 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
     },
   });
 
-  const allFiles = [...files, ...(includeAppDocs ? appDocs : [])];
+  const wikiSource = readme ?? files[0]?.content;
+  const wikiFile = wikiSource ? [{ path: "docs/WIKI.md", content: wikiSource }] : [];
+  const allFiles = [...files, ...(includeWiki ? wikiFile : []), ...(includeAppDocs ? appDocs : [])];
 
   function handlePublish() {
     mutation.mutate({
@@ -134,6 +137,14 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
             onCheckedChange={(value) => setIncludeBrand(value === true)}
           />
           Add banner and logo (SVG, stored in the repo)
+        </label>
+        <label className="flex items-center gap-2 text-sm">
+          <Checkbox
+            checked={includeWiki}
+            onCheckedChange={(value) => setIncludeWiki(value === true)}
+            disabled={!wikiSource}
+          />
+          Publish a wiki-ready document
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
@@ -214,7 +225,8 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
             ))}
           </ul>
           <p className="text-xs text-muted-foreground">
-            GitHub doesn't let apps write Wiki pages, so paste these in by hand.
+            GitHub doesn't let apps write Wiki pages. The wiki-ready document is committed to
+            docs/WIKI.md, and you can also copy it into the GitHub Wiki.
           </p>
         </div>
       ) : null}

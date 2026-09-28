@@ -21,3 +21,4 @@
 - Store brand SVGs inside each published repo under .github/brand/, because READMEs must not depend on this site being live.
 - Call GitHub as each signed-in visitor via the GitHub App User Connector (encrypted keys in app_user_connections), because publishing must never use a shared account; the shared connection is only a public-read fallback for reports.
 - Store the owner access code as a SHA-256 hash in studio_settings (env secret only as fallback), because the owner must change it without a rebuild.
+- Store only hashed per-session visit identifiers and page categories for analytics, because usage reporting must not retain repository URLs, content, access codes, or IP addresses.
