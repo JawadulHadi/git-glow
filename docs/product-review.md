@@ -1,5 +1,9 @@
 # Product review: From README Studio to Code Report Studio
 
+## Status
+
+Phase 2 (repository report) and GitHub publishing are built. See docs/code-report.md and docs/publishing.md.
+
 ## Decision
 
 The broader idea is justified. README generation is a useful first workflow, but Markdown is a delivery format rather than the whole product. The stronger product is a repository analysis studio that turns selected code and verified development history into a short, useful report.

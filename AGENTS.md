@@ -16,3 +16,6 @@
 - Keep README generation behind the existing owner access code because AI usage must not be publicly consumable.
 - Require the GitHub owner as user input because publishing must never target a hardcoded personal account.
 - Keep generated content identity-neutral because the studio is a reusable product, not a personal portfolio.
+- Keep "Verified facts" deterministic (built by src/lib/sources.ts formatFacts) and stream AI text only as a separate interpretation, because facts must never be model-written.
+- Route all GitHub reads and writes through the connector gateway helper in src/lib/github-gateway.server.ts, because credentials must stay server-side.
+- Store brand SVGs inside each published repo under .github/brand/, because READMEs must not depend on this site being live.

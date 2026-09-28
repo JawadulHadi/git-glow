@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { Check, Copy, Github, Loader2, Sparkles, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GithubPublishPanel } from "@/components/github-publish-panel";
 import { buildGithubPublishUrl, streamReadmeDraft } from "@/lib/readme-draft";
 
 const fieldClass =
@@ -192,11 +193,12 @@ export function ReadmeStudio() {
               </Button>
               <Button
                 type="button"
+                variant="outline"
                 size="sm"
                 disabled={!draft || isDrafting}
                 onClick={handlePublish}
               >
-                <Github /> Publish to GitHub
+                <Github /> Open in GitHub editor
               </Button>
             </div>
           </div>
@@ -219,6 +221,16 @@ export function ReadmeStudio() {
           )}
         </section>
       </div>
+      {draft && !isDrafting ? (
+        <div className="mt-6">
+          <GithubPublishPanel
+            accessCode={accessCode}
+            owner={githubOwner}
+            repo={repositoryName}
+            readme={draft.trim() + "\n"}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
