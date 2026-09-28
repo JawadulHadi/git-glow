@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadmeStudioRouteImport } from './routes/readme-studio'
+import { Route as ApiCodeReportRouteImport } from './routes/api/code-report'
 import { Route as ApiReadmeDraftRouteImport } from './routes/api/readme-draft'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const ReadmeStudioRoute = ReadmeStudioRouteImport.update({
   path: '/readme-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCodeReportRoute = ApiCodeReportRouteImport.update({
+  id: '/api/code-report',
+  path: '/api/code-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiReadmeDraftRoute = ApiReadmeDraftRouteImport.update({
   id: '/api/readme-draft',
   path: '/api/readme-draft',
@@ -32,30 +38,39 @@ const ApiReadmeDraftRoute = ApiReadmeDraftRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/readme-studio': typeof ReadmeStudioRoute
+  '/api/code-report': typeof ApiCodeReportRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/readme-studio': typeof ReadmeStudioRoute
+  '/api/code-report': typeof ApiCodeReportRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/readme-studio': typeof ReadmeStudioRoute
+  '/api/code-report': typeof ApiCodeReportRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/readme-studio' | '/api/readme-draft'
+  fullPaths: '/' | '/readme-studio' | '/api/code-report' | '/api/readme-draft'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/readme-studio' | '/api/readme-draft'
-  id: '__root__' | '/' | '/readme-studio' | '/api/readme-draft'
+  to: '/' | '/readme-studio' | '/api/code-report' | '/api/readme-draft'
+  id:
+    | '__root__'
+    | '/'
+    | '/readme-studio'
+    | '/api/code-report'
+    | '/api/readme-draft'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ReadmeStudioRoute: typeof ReadmeStudioRoute
+  ApiCodeReportRoute: typeof ApiCodeReportRoute
   ApiReadmeDraftRoute: typeof ApiReadmeDraftRoute
 }
 
@@ -75,6 +90,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadmeStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/code-report': {
+      id: '/api/code-report'
+      path: '/api/code-report'
+      fullPath: '/api/code-report'
+      preLoaderRoute: typeof ApiCodeReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/readme-draft': {
       id: '/api/readme-draft'
       path: '/api/readme-draft'
@@ -88,6 +110,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ReadmeStudioRoute: ReadmeStudioRoute,
+  ApiCodeReportRoute: ApiCodeReportRoute,
   ApiReadmeDraftRoute: ApiReadmeDraftRoute,
 }
 export const routeTree = rootRouteImport
