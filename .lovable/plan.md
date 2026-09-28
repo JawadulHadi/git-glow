@@ -23,3 +23,6 @@ Replace the personal portfolio with a focused README-writing product. No public 
 - Keep TanStack Start and the existing server-only AI Gateway endpoint.
 - Preserve streaming output, explicit stop behavior, safe model errors, and constant-time owner-code checking.
 - Use semantic Tailwind tokens and existing interface controls.
+
+## Product review question
+Should this become a broader code analysis studio rather than only a README writer? A user could select or paste code, connect a repository, and receive a concise Markdown report covering structure, logic, history, and verified public references from supported platforms. The product must separate verified findings from AI interpretation, avoid inventing contribution history, and explain that free usage depends on provider costs and API limits. Document the workflow, supported sources, privacy model, limitations, and phased delivery before implementation.

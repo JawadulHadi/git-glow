@@ -9,3 +9,4 @@
 - [x] README studio: owner-only AI README drafting page
 - [x] Brand kit ZIP: logo, portrait mark, banner in repo-ready sizes/formats
 - [ ] Remove all personal and Qeloma references and relaunch as a fictional README Studio
+- [ ] Define and document a broader code analysis studio using verified repository references
