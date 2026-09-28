@@ -22,7 +22,8 @@ export const Route = createFileRoute("/api/readme-draft")({
     handlers: {
       POST: async ({ request }) => {
         const parsed = requestSchema.safeParse(await request.json().catch(() => null));
-        if (!parsed.success) return jsonError(400, "Please provide a repository name and description.");
+        if (!parsed.success)
+          return jsonError(400, "Please provide a repository name and description.");
         const input = parsed.data;
         const denied = checkOwner(input.accessCode);
         if (denied) return denied;

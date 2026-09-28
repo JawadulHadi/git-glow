@@ -1,6 +1,7 @@
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/github";
 
-export type GithubResult<T> = { ok: true; status: number; data: T } | { ok: false; status: number; message: string };
+export type GithubResult<T> =
+  { ok: true; status: number; data: T } | { ok: false; status: number; message: string };
 
 /** Calls the GitHub REST API through the connected GitHub account. */
 export async function githubRequest<T>(

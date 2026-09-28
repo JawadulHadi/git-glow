@@ -18,7 +18,8 @@ export function jsonError(status: number, message: string): Response {
 export function checkOwner(accessCode: string): Response | null {
   const ownerCode = process.env["README_STUDIO_ACCESS_CODE"];
   if (!ownerCode) return jsonError(500, "The studio is not configured yet.");
-  if (!codesMatch(accessCode, ownerCode)) return jsonError(401, "That owner access code is not correct.");
+  if (!codesMatch(accessCode, ownerCode))
+    return jsonError(401, "That owner access code is not correct.");
   return null;
 }
 
@@ -105,7 +106,9 @@ export async function streamModelText(options: StreamOptions): Promise<Response>
         controller.enqueue(encoder.encode(event.delta));
       } else if (event.type === "error" || event.type === "response.failed") {
         const message =
-          event.error?.message ?? event.response?.error?.message ?? "The text could not be completed.";
+          event.error?.message ??
+          event.response?.error?.message ??
+          "The text could not be completed.";
         wroteText = true;
         controller.enqueue(encoder.encode(`\n[[error]]${message}`));
       }
@@ -129,7 +132,8 @@ export async function streamModelText(options: StreamOptions): Promise<Response>
       flush(controller) {
         if (prefix && !wrotePrefix) controller.enqueue(encoder.encode(prefix));
         if (buffer) handleLine(buffer, controller);
-        if (!wroteText) controller.enqueue(encoder.encode("\n[[error]]The model returned an empty response."));
+        if (!wroteText)
+          controller.enqueue(encoder.encode("\n[[error]]The model returned an empty response."));
       },
     }),
   );

@@ -11,7 +11,12 @@ import {
 } from "@/lib/brand";
 import type { PublishStep } from "@/lib/publish";
 
-const name = z.string().trim().min(1).max(100).regex(/^[A-Za-z0-9._-]+$/);
+const name = z
+  .string()
+  .trim()
+  .min(1)
+  .max(100)
+  .regex(/^[A-Za-z0-9._-]+$/);
 
 const requestSchema = z.object({
   accessCode: z.string().min(1),
@@ -19,10 +24,18 @@ const requestSchema = z.object({
   repo: name,
   readme: z.string().max(60000).optional(),
   description: z.string().trim().max(350).optional(),
-  topics: z.array(z.string().regex(/^[a-z0-9-]{1,50}$/)).max(20).optional(),
+  topics: z
+    .array(z.string().regex(/^[a-z0-9-]{1,50}$/))
+    .max(20)
+    .optional(),
   release: z
     .object({
-      tag: z.string().trim().min(1).max(100).regex(/^[A-Za-z0-9._\/-]+$/),
+      tag: z
+        .string()
+        .trim()
+        .min(1)
+        .max(100)
+        .regex(/^[A-Za-z0-9._\/-]+$/),
       name: z.string().trim().max(200),
       notes: z.string().max(20000),
     })
@@ -30,13 +43,20 @@ const requestSchema = z.object({
   files: z
     .array(
       z.object({
-        path: z.string().trim().min(1).max(200).regex(/^(docs|\.github)\/[A-Za-z0-9._\/-]+\.md$/),
+        path: z
+          .string()
+          .trim()
+          .min(1)
+          .max(200)
+          .regex(/^(docs|\.github)\/[A-Za-z0-9._\/-]+\.md$/),
         content: z.string().max(60000),
       }),
     )
     .max(10)
     .optional(),
-  brand: z.object({ title: z.string().trim().min(1).max(48), tagline: z.string().trim().max(90) }).optional(),
+  brand: z
+    .object({ title: z.string().trim().min(1).max(48), tagline: z.string().trim().max(90) })
+    .optional(),
 });
 
 type RepoInfo = { default_branch: string; html_url: string; description: string | null };
@@ -46,12 +66,28 @@ function encode(content: string): string {
   return Buffer.from(content, "utf8").toString("base64");
 }
 
-async function putFile(base: string, branch: string, path: string, content: string, message: string): Promise<PublishStep> {
-  const existing = await githubRequest<ContentInfo>(`${base}/contents/${path}?ref=${encodeURIComponent(branch)}`);
-  const result = await githubRequest<{ content: { html_url: string } }>(`${base}/contents/${path}`, {
-    method: "PUT",
-    body: { message, content: encode(content), branch, ...(existing.ok ? { sha: existing.data.sha } : {}) },
-  });
+async function putFile(
+  base: string,
+  branch: string,
+  path: string,
+  content: string,
+  message: string,
+): Promise<PublishStep> {
+  const existing = await githubRequest<ContentInfo>(
+    `${base}/contents/${path}?ref=${encodeURIComponent(branch)}`,
+  );
+  const result = await githubRequest<{ content: { html_url: string } }>(
+    `${base}/contents/${path}`,
+    {
+      method: "PUT",
+      body: {
+        message,
+        content: encode(content),
+        branch,
+        ...(existing.ok ? { sha: existing.data.sha } : {}),
+      },
+    },
+  );
   if (!result.ok) return { label: path, ok: false, detail: result.message };
   return {
     label: path,
@@ -87,7 +123,9 @@ export const Route = createFileRoute("/api/github-publish")({
         const steps: PublishStep[] = [];
 
         if (input.brand) {
-          steps.push(await putFile(base, branch, BRAND_LOGO_PATH, buildLogoSvg(), "docs: add studio logo"));
+          steps.push(
+            await putFile(base, branch, BRAND_LOGO_PATH, buildLogoSvg(), "docs: add studio logo"),
+          );
           steps.push(
             await putFile(
               base,
@@ -101,28 +139,65 @@ export const Route = createFileRoute("/api/github-publish")({
 
         if (input.readme) {
           const readme = input.brand ? withBrandHeader(input.readme, input.repo) : input.readme;
-          steps.push(await putFile(base, branch, "README.md", readme.trimEnd() + "\n", "docs: update README"));
+          steps.push(
+            await putFile(
+              base,
+              branch,
+              "README.md",
+              readme.trimEnd() + "\n",
+              "docs: update README",
+            ),
+          );
         }
 
         for (const file of input.files ?? []) {
-          steps.push(await putFile(base, branch, file.path, file.content.trimEnd() + "\n", `docs: update ${file.path}`));
+          steps.push(
+            await putFile(
+              base,
+              branch,
+              file.path,
+              file.content.trimEnd() + "\n",
+              `docs: update ${file.path}`,
+            ),
+          );
         }
 
         if (input.description !== undefined && input.description !== "") {
-          const result = await githubRequest(base, { method: "PATCH", body: { description: input.description } });
-          steps.push({ label: "Description", ok: result.ok, detail: result.ok ? "Saved" : result.message });
+          const result = await githubRequest(base, {
+            method: "PATCH",
+            body: { description: input.description },
+          });
+          steps.push({
+            label: "Description",
+            ok: result.ok,
+            detail: result.ok ? "Saved" : result.message,
+          });
         }
 
         if (input.topics && input.topics.length) {
-          const result = await githubRequest(`${base}/topics`, { method: "PUT", body: { names: input.topics } });
-          steps.push({ label: "Topics", ok: result.ok, detail: result.ok ? input.topics.join(", ") : result.message });
+          const result = await githubRequest(`${base}/topics`, {
+            method: "PUT",
+            body: { names: input.topics },
+          });
+          steps.push({
+            label: "Topics",
+            ok: result.ok,
+            detail: result.ok ? input.topics.join(", ") : result.message,
+          });
         }
 
         if (input.release) {
           const tag = encodeURIComponent(input.release.tag);
-          const existing = await githubRequest<{ html_url: string }>(`${base}/releases/tags/${tag}`);
+          const existing = await githubRequest<{ html_url: string }>(
+            `${base}/releases/tags/${tag}`,
+          );
           if (existing.ok) {
-            steps.push({ label: `Release ${input.release.tag}`, ok: true, detail: "Already exists, left unchanged", url: existing.data.html_url });
+            steps.push({
+              label: `Release ${input.release.tag}`,
+              ok: true,
+              detail: "Already exists, left unchanged",
+              url: existing.data.html_url,
+            });
           } else {
             const created = await githubRequest<{ html_url: string }>(`${base}/releases`, {
               method: "POST",
@@ -145,25 +220,61 @@ export const Route = createFileRoute("/api/github-publish")({
         // Re-read the repository to confirm what GitHub now shows.
         const checks: PublishStep[] = [];
         const readme = await githubRequest<ContentInfo>(`${base}/readme`);
-        const readmeText = readme.ok && readme.data.content ? Buffer.from(readme.data.content, "base64").toString("utf8") : "";
-        checks.push({ label: "README is on the default branch", ok: readme.ok, detail: readme.ok ? "Found" : "Not found", url: readme.ok ? readme.data.html_url : undefined });
+        const readmeText =
+          readme.ok && readme.data.content
+            ? Buffer.from(readme.data.content, "base64").toString("utf8")
+            : "";
+        checks.push({
+          label: "README is on the default branch",
+          ok: readme.ok,
+          detail: readme.ok ? "Found" : "Not found",
+          url: readme.ok ? readme.data.html_url : undefined,
+        });
         if (input.brand) {
-          checks.push({ label: "README shows the banner and logo", ok: readmeText.includes(BRAND_BANNER_PATH) && readmeText.includes(BRAND_LOGO_PATH), detail: readmeText.includes(BRAND_BANNER_PATH) ? "Linked at the top" : "Not linked" });
+          checks.push({
+            label: "README shows the banner and logo",
+            ok: readmeText.includes(BRAND_BANNER_PATH) && readmeText.includes(BRAND_LOGO_PATH),
+            detail: readmeText.includes(BRAND_BANNER_PATH) ? "Linked at the top" : "Not linked",
+          });
           for (const path of [BRAND_BANNER_PATH, BRAND_LOGO_PATH]) {
-            const file = await githubRequest<ContentInfo>(`${base}/contents/${path}?ref=${encodeURIComponent(branch)}`);
-            checks.push({ label: `${path} exists`, ok: file.ok, detail: file.ok ? "Found" : "Missing", url: file.ok ? file.data.html_url : undefined });
+            const file = await githubRequest<ContentInfo>(
+              `${base}/contents/${path}?ref=${encodeURIComponent(branch)}`,
+            );
+            checks.push({
+              label: `${path} exists`,
+              ok: file.ok,
+              detail: file.ok ? "Found" : "Missing",
+              url: file.ok ? file.data.html_url : undefined,
+            });
           }
         }
         if (input.description) {
           const fresh = await githubRequest<RepoInfo>(base);
           const matches = fresh.ok && fresh.data.description === input.description;
-          checks.push({ label: "Description matches", ok: matches, detail: matches ? "Matches" : "Different" });
+          checks.push({
+            label: "Description matches",
+            ok: matches,
+            detail: matches ? "Matches" : "Different",
+          });
         }
         if (input.release) {
-          const tagRef = await githubRequest(`${base}/git/ref/tags/${encodeURIComponent(input.release.tag)}`);
-          checks.push({ label: `Tag ${input.release.tag} exists`, ok: tagRef.ok, detail: tagRef.ok ? "Found" : "Missing" });
-          const release = await githubRequest<{ html_url: string }>(`${base}/releases/tags/${encodeURIComponent(input.release.tag)}`);
-          checks.push({ label: "Release is published", ok: release.ok, detail: release.ok ? "Found" : "Missing", url: release.ok ? release.data.html_url : undefined });
+          const tagRef = await githubRequest(
+            `${base}/git/ref/tags/${encodeURIComponent(input.release.tag)}`,
+          );
+          checks.push({
+            label: `Tag ${input.release.tag} exists`,
+            ok: tagRef.ok,
+            detail: tagRef.ok ? "Found" : "Missing",
+          });
+          const release = await githubRequest<{ html_url: string }>(
+            `${base}/releases/tags/${encodeURIComponent(input.release.tag)}`,
+          );
+          checks.push({
+            label: "Release is published",
+            ok: release.ok,
+            detail: release.ok ? "Found" : "Missing",
+            url: release.ok ? release.data.html_url : undefined,
+          });
         }
 
         return Response.json({ steps, checks });

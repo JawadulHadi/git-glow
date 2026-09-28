@@ -223,7 +223,12 @@ export function ReadmeStudio() {
       </div>
       {draft && !isDrafting ? (
         <div className="mt-6">
-          <GithubPublishPanel accessCode={accessCode} owner={githubOwner} repo={repositoryName} readme={draft.trim() + "\n"} />
+          <GithubPublishPanel
+            accessCode={accessCode}
+            owner={githubOwner}
+            repo={repositoryName}
+            readme={draft.trim() + "\n"}
+          />
         </div>
       ) : null}
     </div>

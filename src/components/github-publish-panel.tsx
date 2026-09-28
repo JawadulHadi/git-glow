@@ -4,7 +4,13 @@ import { CheckCircle2, Copy, ExternalLink, Github, Loader2, XCircle } from "luci
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { appDocs } from "@/lib/app-docs";
-import { parseTopics, publishToGithub, type PublishFile, type PublishInput, type PublishStep } from "@/lib/publish";
+import {
+  parseTopics,
+  publishToGithub,
+  type PublishFile,
+  type PublishInput,
+  type PublishStep,
+} from "@/lib/publish";
 
 const fieldClass =
   "w-full rounded-md border border-border bg-background/70 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
@@ -36,7 +42,12 @@ function StepList({ title, steps }: { title: string; steps: PublishStep[] }) {
               <span className="font-medium">{step.label}</span>
               <span className="text-muted-foreground"> · {step.detail}</span>
               {step.url ? (
-                <a href={step.url} target="_blank" rel="noreferrer" className="ml-1 inline-flex items-center text-primary">
+                <a
+                  href={step.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-1 inline-flex items-center text-primary"
+                >
                   <ExternalLink className="size-3" aria-label="Open on GitHub" />
                 </a>
               ) : null}
@@ -73,7 +84,9 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
       topics: parseTopics(topics),
       release: tag.trim() ? { tag: tag.trim(), name: tag.trim(), notes: releaseNotes } : undefined,
       files: allFiles.length ? allFiles : undefined,
-      brand: includeBrand ? { title: repo.trim() || "Repository", tagline: tagline.trim() || description.trim() } : undefined,
+      brand: includeBrand
+        ? { title: repo.trim() || "Repository", tagline: tagline.trim() || description.trim() }
+        : undefined,
     });
   }
 
@@ -100,16 +113,25 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
       <div className="space-y-3">
         {readme ? (
           <label className="flex items-center gap-2 text-sm">
-            <Checkbox checked={includeReadme} onCheckedChange={(value) => setIncludeReadme(value === true)} />
+            <Checkbox
+              checked={includeReadme}
+              onCheckedChange={(value) => setIncludeReadme(value === true)}
+            />
             Publish README.md
           </label>
         ) : null}
         <label className="flex items-center gap-2 text-sm">
-          <Checkbox checked={includeBrand} onCheckedChange={(value) => setIncludeBrand(value === true)} />
+          <Checkbox
+            checked={includeBrand}
+            onCheckedChange={(value) => setIncludeBrand(value === true)}
+          />
           Add banner and logo (SVG, stored in the repo)
         </label>
         <label className="flex items-center gap-2 text-sm">
-          <Checkbox checked={includeAppDocs} onCheckedChange={(value) => setIncludeAppDocs(value === true)} />
+          <Checkbox
+            checked={includeAppDocs}
+            onCheckedChange={(value) => setIncludeAppDocs(value === true)}
+          />
           Include the studio documentation in docs/
         </label>
       </div>
@@ -117,25 +139,53 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Repository description</span>
-          <input value={description} onChange={(e) => setDescription(e.target.value)} maxLength={350} placeholder="Event-driven cache service with explicit invalidation" className={fieldClass} />
+          <input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            maxLength={350}
+            placeholder="Event-driven cache service with explicit invalidation"
+            className={fieldClass}
+          />
         </label>
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Topics</span>
-          <input value={topics} onChange={(e) => setTopics(e.target.value)} placeholder="typescript, cache, redis" className={fieldClass} />
+          <input
+            value={topics}
+            onChange={(e) => setTopics(e.target.value)}
+            placeholder="typescript, cache, redis"
+            className={fieldClass}
+          />
         </label>
         {includeBrand ? (
           <label className="block space-y-1.5 sm:col-span-2">
             <span className="text-sm font-medium">Banner tagline</span>
-            <input value={tagline} onChange={(e) => setTagline(e.target.value)} maxLength={90} placeholder="Uses the description when left empty" className={fieldClass} />
+            <input
+              value={tagline}
+              onChange={(e) => setTagline(e.target.value)}
+              maxLength={90}
+              placeholder="Uses the description when left empty"
+              className={fieldClass}
+            />
           </label>
         ) : null}
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Release tag</span>
-          <input value={tag} onChange={(e) => setTag(e.target.value)} placeholder="v1.0.0 (optional)" className={fieldClass} />
+          <input
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+            placeholder="v1.0.0 (optional)"
+            className={fieldClass}
+          />
         </label>
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Release notes</span>
-          <textarea value={releaseNotes} onChange={(e) => setReleaseNotes(e.target.value)} rows={2} placeholder="What changed in this release" className={fieldClass} />
+          <textarea
+            value={releaseNotes}
+            onChange={(e) => setReleaseNotes(e.target.value)}
+            rows={2}
+            placeholder="What changed in this release"
+            className={fieldClass}
+          />
         </label>
       </div>
 
@@ -144,7 +194,10 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
           <p className="text-sm font-medium">Docs pages</p>
           <ul className="space-y-1.5">
             {allFiles.map((file) => (
-              <li key={file.path} className="flex items-center justify-between gap-3 rounded-md border border-border bg-background/40 px-3 py-2">
+              <li
+                key={file.path}
+                className="flex items-center justify-between gap-3 rounded-md border border-border bg-background/40 px-3 py-2"
+              >
                 <span className="truncate font-mono text-xs">{file.path}</span>
                 <Button type="button" variant="ghost" size="sm" onClick={() => copyForWiki(file)}>
                   <Copy /> {copiedPath === file.path ? "Copied" : "Copy for wiki"}
@@ -152,7 +205,9 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
               </li>
             ))}
           </ul>
-          <p className="text-xs text-muted-foreground">GitHub doesn't let apps write Wiki pages, so paste these in by hand.</p>
+          <p className="text-xs text-muted-foreground">
+            GitHub doesn't let apps write Wiki pages, so paste these in by hand.
+          </p>
         </div>
       ) : null}
 
@@ -160,7 +215,11 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
         {mutation.isPending ? <Loader2 className="animate-spin" /> : <Github />}
         {mutation.isPending ? "Publishing…" : "Publish to GitHub"}
       </Button>
-      {!accessCode ? <p className="text-xs text-muted-foreground">Enter the owner access code above to publish.</p> : null}
+      {!accessCode ? (
+        <p className="text-xs text-muted-foreground">
+          Enter the owner access code above to publish.
+        </p>
+      ) : null}
 
       {mutation.error ? (
         <p className="text-sm text-destructive" role="alert">

@@ -12,9 +12,13 @@ async function cached(key: string, load: () => Promise<SourceFacts>): Promise<So
   return value;
 }
 
-async function getJson<T>(url: string): Promise<{ ok: true; data: T } | { ok: false; status: number }> {
+async function getJson<T>(
+  url: string,
+): Promise<{ ok: true; data: T } | { ok: false; status: number }> {
   try {
-    const response = await fetch(url, { headers: { Accept: "application/json", "User-Agent": "readme-studio" } });
+    const response = await fetch(url, {
+      headers: { Accept: "application/json", "User-Agent": "readme-studio" },
+    });
     if (!response.ok) return { ok: false, status: response.status };
     return { ok: true, data: (await response.json()) as T };
   } catch {
@@ -43,8 +47,17 @@ type GhRepo = {
   default_branch: string;
   license: { name: string } | null;
 };
-type GhCommit = { sha: string; html_url: string; commit: { message: string; author: { name: string; date: string } | null } };
-type GhRelease = { tag_name: string; name: string | null; html_url: string; published_at: string | null };
+type GhCommit = {
+  sha: string;
+  html_url: string;
+  commit: { message: string; author: { name: string; date: string } | null };
+};
+type GhRelease = {
+  tag_name: string;
+  name: string | null;
+  html_url: string;
+  published_at: string | null;
+};
 type GhContributor = { login: string; contributions: number; html_url: string };
 
 async function collectGithub(ref: RepoRef): Promise<SourceFacts> {
@@ -66,7 +79,10 @@ async function collectGithub(ref: RepoRef): Promise<SourceFacts> {
       text: `${formatNumber(r.stargazers_count)} stars, ${formatNumber(r.forks_count)} forks, ${formatNumber(r.open_issues_count)} open issues and pull requests`,
       url: r.html_url,
     },
-    { text: `Created ${formatDate(r.created_at)}, last push ${formatDate(r.pushed_at)}`, url: r.html_url },
+    {
+      text: `Created ${formatDate(r.created_at)}, last push ${formatDate(r.pushed_at)}`,
+      url: r.html_url,
+    },
     { text: `Licence: ${r.license?.name ?? "none detected"}`, url: r.html_url },
   ];
   if (languages.ok) {
@@ -93,8 +109,13 @@ async function collectGithub(ref: RepoRef): Promise<SourceFacts> {
   if (commits.ok) {
     for (const commit of commits.data) {
       const title = commit.commit.message.split("\n")[0]?.slice(0, 100) ?? "";
-      const date = commit.commit.author?.date ? formatDate(commit.commit.author.date) : "unknown date";
-      lines.push({ text: `Commit ${commit.sha.slice(0, 7)} on ${date}: ${title}`, url: commit.html_url });
+      const date = commit.commit.author?.date
+        ? formatDate(commit.commit.author.date)
+        : "unknown date";
+      lines.push({
+        text: `Commit ${commit.sha.slice(0, 7)} on ${date}: ${title}`,
+        url: commit.html_url,
+      });
     }
   }
   return { source, url, available: true, lines };
@@ -126,28 +147,51 @@ async function collectGitlab(ref: RepoRef): Promise<SourceFacts> {
   const p = project.data;
   const lines: FactLine[] = [
     { text: `Description: ${p.description || "none set"}`, url: p.web_url },
-    { text: `${formatNumber(p.star_count)} stars, ${formatNumber(p.forks_count)} forks`, url: p.web_url },
-    { text: `Created ${formatDate(p.created_at)}, last activity ${formatDate(p.last_activity_at)}`, url: p.web_url },
+    {
+      text: `${formatNumber(p.star_count)} stars, ${formatNumber(p.forks_count)} forks`,
+      url: p.web_url,
+    },
+    {
+      text: `Created ${formatDate(p.created_at)}, last activity ${formatDate(p.last_activity_at)}`,
+      url: p.web_url,
+    },
   ];
   if (languages.ok) {
-    const top = Object.entries(languages.data).map(([name, pct]) => `${name} ${formatNumber(pct)} %`);
-    if (top.length) lines.push({ text: `Languages: ${top.slice(0, 5).join(", ")}`, url: p.web_url });
+    const top = Object.entries(languages.data).map(
+      ([name, pct]) => `${name} ${formatNumber(pct)} %`,
+    );
+    if (top.length)
+      lines.push({ text: `Languages: ${top.slice(0, 5).join(", ")}`, url: p.web_url });
   }
   if (releases.ok) {
     for (const release of releases.data) {
-      lines.push({ text: `Release ${release.tag_name} on ${formatDate(release.released_at)}`, url: `${url}/-/releases/${encodeURIComponent(release.tag_name)}` });
+      lines.push({
+        text: `Release ${release.tag_name} on ${formatDate(release.released_at)}`,
+        url: `${url}/-/releases/${encodeURIComponent(release.tag_name)}`,
+      });
     }
   }
   if (commits.ok) {
     for (const commit of commits.data) {
-      lines.push({ text: `Commit ${commit.short_id} on ${formatDate(commit.created_at)}: ${commit.title.slice(0, 100)}`, url: commit.web_url });
+      lines.push({
+        text: `Commit ${commit.short_id} on ${formatDate(commit.created_at)}: ${commit.title.slice(0, 100)}`,
+        url: commit.web_url,
+      });
     }
   }
   return { source, url, available: true, lines };
 }
 
-type BbRepo = { description: string; language: string; created_on: string; updated_on: string; links: { html: { href: string } } };
-type BbCommits = { values: { hash: string; date: string; message: string; links: { html: { href: string } } }[] };
+type BbRepo = {
+  description: string;
+  language: string;
+  created_on: string;
+  updated_on: string;
+  links: { html: { href: string } };
+};
+type BbCommits = {
+  values: { hash: string; date: string; message: string; links: { html: { href: string } } }[];
+};
 
 async function collectBitbucket(ref: RepoRef): Promise<SourceFacts> {
   const api = `https://api.bitbucket.org/2.0/repositories/${encodeURIComponent(ref.owner)}/${encodeURIComponent(ref.repo)}`;
@@ -160,7 +204,10 @@ async function collectBitbucket(ref: RepoRef): Promise<SourceFacts> {
   const lines: FactLine[] = [
     { text: `Description: ${r.description || "none set"}`, url: r.links.html.href },
     { text: `Main language: ${r.language || "not set"}`, url: r.links.html.href },
-    { text: `Created ${formatDate(r.created_on)}, last update ${formatDate(r.updated_on)}`, url: r.links.html.href },
+    {
+      text: `Created ${formatDate(r.created_on)}, last update ${formatDate(r.updated_on)}`,
+      url: r.links.html.href,
+    },
   ];
   if (commits.ok) {
     for (const commit of commits.data.values) {
@@ -187,10 +234,15 @@ async function collectNpm(name: string): Promise<SourceFacts> {
     getJson<NpmTimes>(`https://registry.npmjs.org/${name}`),
   ]);
   const lines: FactLine[] = [
-    { text: `Latest version ${latest.data.version}${latest.data.license ? `, licence ${latest.data.license}` : ""}`, url },
+    {
+      text: `Latest version ${latest.data.version}${latest.data.license ? `, licence ${latest.data.license}` : ""}`,
+      url,
+    },
   ];
   if (times.ok) {
-    const versions = Object.keys(times.data.time).filter((key) => key !== "created" && key !== "modified");
+    const versions = Object.keys(times.data.time).filter(
+      (key) => key !== "created" && key !== "modified",
+    );
     const published = times.data.time[latest.data.version];
     lines.push({
       text: `${formatNumber(versions.length)} published versions${published ? `, latest on ${formatDate(published)}` : ""}`,
@@ -198,12 +250,18 @@ async function collectNpm(name: string): Promise<SourceFacts> {
     });
   }
   if (downloads.ok) {
-    lines.push({ text: `${formatNumber(downloads.data.downloads)} downloads in the last month`, url: `https://npm-stat.com/charts.html?package=${name}` });
+    lines.push({
+      text: `${formatNumber(downloads.data.downloads)} downloads in the last month`,
+      url: `https://npm-stat.com/charts.html?package=${name}`,
+    });
   }
   return { source, url, available: true, lines };
 }
 
-type PypiInfo = { info: { version: string; license: string | null; summary: string | null }; releases: Record<string, { upload_time_iso_8601: string }[]> };
+type PypiInfo = {
+  info: { version: string; license: string | null; summary: string | null };
+  releases: Record<string, { upload_time_iso_8601: string }[]>;
+};
 type PypiRecent = { data: { last_month: number } };
 
 async function collectPypi(name: string): Promise<SourceFacts> {
@@ -211,25 +269,45 @@ async function collectPypi(name: string): Promise<SourceFacts> {
   const source = `PyPI · ${name}`;
   const info = await getJson<PypiInfo>(`https://pypi.org/pypi/${encodeURIComponent(name)}/json`);
   if (!info.ok) return unavailable(source, url, info.status);
-  const recent = await getJson<PypiRecent>(`https://pypistats.org/api/packages/${encodeURIComponent(name.toLowerCase())}/recent`);
+  const recent = await getJson<PypiRecent>(
+    `https://pypistats.org/api/packages/${encodeURIComponent(name.toLowerCase())}/recent`,
+  );
   const latestFiles = info.data.releases[info.data.info.version] ?? [];
   const uploaded = latestFiles[0]?.upload_time_iso_8601;
   const lines: FactLine[] = [
-    { text: `Latest version ${info.data.info.version}${uploaded ? ` on ${formatDate(uploaded)}` : ""}`, url },
-    { text: `${formatNumber(Object.keys(info.data.releases).length)} published versions`, url: `${url}#history` },
+    {
+      text: `Latest version ${info.data.info.version}${uploaded ? ` on ${formatDate(uploaded)}` : ""}`,
+      url,
+    },
+    {
+      text: `${formatNumber(Object.keys(info.data.releases).length)} published versions`,
+      url: `${url}#history`,
+    },
   ];
   if (recent.ok) {
-    lines.push({ text: `${formatNumber(recent.data.data.last_month)} downloads in the last month`, url: `https://pypistats.org/packages/${name.toLowerCase()}` });
+    lines.push({
+      text: `${formatNumber(recent.data.data.last_month)} downloads in the last month`,
+      url: `https://pypistats.org/packages/${name.toLowerCase()}`,
+    });
   }
   return { source, url, available: true, lines };
 }
 
-export async function collectFacts(input: { repo: RepoRef | null; npmPackage?: string; pypiPackage?: string }): Promise<SourceFacts[]> {
+export async function collectFacts(input: {
+  repo: RepoRef | null;
+  npmPackage?: string;
+  pypiPackage?: string;
+}): Promise<SourceFacts[]> {
   const jobs: Promise<SourceFacts>[] = [];
   const { repo, npmPackage, pypiPackage } = input;
   if (repo) {
     const key = `${repo.host}:${repo.owner}/${repo.repo}`.toLowerCase();
-    const loader = repo.host === "github" ? collectGithub : repo.host === "gitlab" ? collectGitlab : collectBitbucket;
+    const loader =
+      repo.host === "github"
+        ? collectGithub
+        : repo.host === "gitlab"
+          ? collectGitlab
+          : collectBitbucket;
     jobs.push(cached(key, () => loader(repo)));
   }
   if (npmPackage) jobs.push(cached(`npm:${npmPackage}`, () => collectNpm(npmPackage)));

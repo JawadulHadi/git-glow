@@ -30,7 +30,8 @@ export const Route = createFileRoute("/api/code-report")({
     handlers: {
       POST: async ({ request }) => {
         const parsed = requestSchema.safeParse(await request.json().catch(() => null));
-        if (!parsed.success) return jsonError(400, "Please check the repository link and package names.");
+        if (!parsed.success)
+          return jsonError(400, "Please check the repository link and package names.");
         const input = parsed.data;
         const denied = checkOwner(input.accessCode);
         if (denied) return denied;
@@ -49,7 +50,9 @@ export const Route = createFileRoute("/api/code-report")({
           pypiPackage: input.pypiPackage || undefined,
         });
         const factsMarkdown = formatFacts(facts);
-        const title = repo ? `${repo.owner}/${repo.repo}` : input.npmPackage || input.pypiPackage || "Code excerpt";
+        const title = repo
+          ? `${repo.owner}/${repo.repo}`
+          : input.npmPackage || input.pypiPackage || "Code excerpt";
         const today = new Date();
         const stamp = `${String(today.getUTCDate()).padStart(2, "0")}/${String(today.getUTCMonth() + 1).padStart(2, "0")}/${today.getUTCFullYear()}`;
         const prefix = `# Code report: ${title}\n\n_Generated ${stamp}. Verified facts come from public sources; the interpretation is written by AI._\n\n${facts.length ? factsMarkdown : ""}`;

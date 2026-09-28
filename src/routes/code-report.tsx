@@ -10,9 +10,17 @@ export const Route = createFileRoute("/code-report")({
   head: () => ({
     meta: [
       { title: "Code report · README Studio" },
-      { name: "description", content: "Short, sourced reports on a repository's history, releases and packages, with AI interpretation kept separate." },
+      {
+        name: "description",
+        content:
+          "Short, sourced reports on a repository's history, releases and packages, with AI interpretation kept separate.",
+      },
       { property: "og:title", content: "Code report · README Studio" },
-      { property: "og:description", content: "Verified repository facts from GitHub, GitLab, Bitbucket, npm and PyPI, plus a labelled AI summary." },
+      {
+        property: "og:description",
+        content:
+          "Verified repository facts from GitHub, GitLab, Bitbucket, npm and PyPI, plus a labelled AI summary.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
@@ -26,7 +34,9 @@ const fieldClass =
 
 function CodeReportPage() {
   const [accessCode, setAccessCode] = useState("");
-  const [repositoryUrl, setRepositoryUrl] = useState("https://github.com/alex-morgan-demo/signal-cache");
+  const [repositoryUrl, setRepositoryUrl] = useState(
+    "https://github.com/alex-morgan-demo/signal-cache",
+  );
   const [npmPackage, setNpmPackage] = useState("");
   const [pypiPackage, setPypiPackage] = useState("");
   const [code, setCode] = useState("");
@@ -46,9 +56,14 @@ function CodeReportPage() {
     setReport("");
     setIsRunning(true);
     try {
-      await streamCodeReport({ accessCode, repositoryUrl, npmPackage, pypiPackage, code }, setReport, controller.signal);
+      await streamCodeReport(
+        { accessCode, repositoryUrl, npmPackage, pypiPackage, code },
+        setReport,
+        controller.signal,
+      );
     } catch (caught) {
-      if (!controller.signal.aborted) setError(caught instanceof Error ? caught.message : "The report could not be created.");
+      if (!controller.signal.aborted)
+        setError(caught instanceof Error ? caught.message : "The report could not be created.");
     } finally {
       setIsRunning(false);
     }
@@ -76,7 +91,8 @@ function CodeReportPage() {
           A short, sourced report on any project.
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Verified facts come from GitHub, GitLab, Bitbucket, npm and PyPI, and each one links to its source. The AI interpretation is kept separate.
+          Verified facts come from GitHub, GitLab, Bitbucket, npm and PyPI, and each one links to
+          its source. The AI interpretation is kept separate.
         </p>
       </header>
 
@@ -84,29 +100,61 @@ function CodeReportPage() {
         <form onSubmit={handleSubmit} className="glass-panel space-y-5 p-5 sm:p-6">
           <label className="block space-y-2">
             <span className="text-sm font-medium">Owner access code</span>
-            <input type="password" required value={accessCode} onChange={(e) => setAccessCode(e.target.value)} className={fieldClass} autoComplete="current-password" />
+            <input
+              type="password"
+              required
+              value={accessCode}
+              onChange={(e) => setAccessCode(e.target.value)}
+              className={fieldClass}
+              autoComplete="current-password"
+            />
           </label>
           <label className="block space-y-2">
             <span className="text-sm font-medium">Repository link</span>
-            <input value={repositoryUrl} onChange={(e) => setRepositoryUrl(e.target.value)} placeholder="https://github.com/owner/repository" className={fieldClass} />
+            <input
+              value={repositoryUrl}
+              onChange={(e) => setRepositoryUrl(e.target.value)}
+              placeholder="https://github.com/owner/repository"
+              className={fieldClass}
+            />
             <span className="block text-xs text-muted-foreground">
-              {repositoryUrl && !repo ? "Use a GitHub, GitLab or Bitbucket link." : "The default is a fictional example. Replace it with a real repository."}
+              {repositoryUrl && !repo
+                ? "Use a GitHub, GitLab or Bitbucket link."
+                : "The default is a fictional example. Replace it with a real repository."}
             </span>
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block space-y-2">
               <span className="text-sm font-medium">npm package</span>
-              <input value={npmPackage} onChange={(e) => setNpmPackage(e.target.value)} placeholder="Optional" className={fieldClass} />
+              <input
+                value={npmPackage}
+                onChange={(e) => setNpmPackage(e.target.value)}
+                placeholder="Optional"
+                className={fieldClass}
+              />
             </label>
             <label className="block space-y-2">
               <span className="text-sm font-medium">PyPI package</span>
-              <input value={pypiPackage} onChange={(e) => setPypiPackage(e.target.value)} placeholder="Optional" className={fieldClass} />
+              <input
+                value={pypiPackage}
+                onChange={(e) => setPypiPackage(e.target.value)}
+                placeholder="Optional"
+                className={fieldClass}
+              />
             </label>
           </div>
           <label className="block space-y-2">
             <span className="text-sm font-medium">Code excerpt</span>
-            <span className="block text-xs text-muted-foreground">Optional. Not stored, and used only for this report.</span>
-            <textarea rows={8} maxLength={20000} value={code} onChange={(e) => setCode(e.target.value)} className={`${fieldClass} font-mono text-xs`} />
+            <span className="block text-xs text-muted-foreground">
+              Optional. Not stored, and used only for this report.
+            </span>
+            <textarea
+              rows={8}
+              maxLength={20000}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className={`${fieldClass} font-mono text-xs`}
+            />
           </label>
           <div className="flex flex-wrap gap-3">
             <Button type="submit" disabled={isRunning}>
@@ -114,29 +162,54 @@ function CodeReportPage() {
               {isRunning ? "Building report…" : "Create report"}
             </Button>
             {isRunning ? (
-              <Button type="button" variant="outline" onClick={() => controllerRef.current?.abort()}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => controllerRef.current?.abort()}
+              >
                 <Square /> Stop
               </Button>
             ) : null}
           </div>
-          {error ? <p className="text-sm text-destructive" role="alert">{error}</p> : null}
+          {error ? (
+            <p className="text-sm text-destructive" role="alert">
+              {error}
+            </p>
+          ) : null}
           <p className="text-xs text-muted-foreground">Each report uses AI credits.</p>
         </form>
 
-        <section className="glass-panel flex min-h-[36rem] flex-col p-5 sm:p-6" aria-label="Code report">
+        <section
+          className="glass-panel flex min-h-[36rem] flex-col p-5 sm:p-6"
+          aria-label="Code report"
+        >
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
             <h2 className="font-display text-xl font-semibold">CODE_REPORT.md</h2>
             <div className="flex gap-2">
-              <Button type="button" variant="outline" size="sm" disabled={!report || isRunning} onClick={handleCopy}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={!report || isRunning}
+                onClick={handleCopy}
+              >
                 {copied ? <Check /> : <Copy />} {copied ? "Copied" : "Copy"}
               </Button>
-              <Button type="button" variant="outline" size="sm" disabled={!report || isRunning} onClick={handleDownload}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={!report || isRunning}
+                onClick={handleDownload}
+              >
                 <Download /> Download
               </Button>
             </div>
           </div>
           {report ? (
-            <pre className="flex-1 overflow-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-foreground/90">{report}</pre>
+            <pre className="flex-1 overflow-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-foreground/90">
+              {report}
+            </pre>
           ) : (
             <div className="grid flex-1 place-items-center rounded-md border border-dashed border-border bg-background/35 p-8 text-center text-sm text-muted-foreground">
               {isRunning ? "Collecting sources…" : "Your report will appear here."}
@@ -147,7 +220,12 @@ function CodeReportPage() {
 
       {report && !isRunning && repo?.host === "github" ? (
         <div className="mt-6">
-          <GithubPublishPanel accessCode={accessCode} owner={repo.owner} repo={repo.repo} files={[{ path: "docs/CODE_REPORT.md", content: report }]} />
+          <GithubPublishPanel
+            accessCode={accessCode}
+            owner={repo.owner}
+            repo={repo.repo}
+            files={[{ path: "docs/CODE_REPORT.md", content: report }]}
+          />
         </div>
       ) : null}
     </div>

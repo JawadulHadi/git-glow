@@ -61,7 +61,8 @@ export function formatDate(iso: string): string {
 export function formatFacts(facts: SourceFacts[]): string {
   const blocks = facts.map((fact) => {
     const heading = `### ${fact.source}\n\n`;
-    if (!fact.available) return `${heading}- Unavailable: ${fact.note ?? "the source could not be reached."}`;
+    if (!fact.available)
+      return `${heading}- Unavailable: ${fact.note ?? "the source could not be reached."}`;
     if (fact.lines.length === 0) return `${heading}- No public data found.`;
     return heading + fact.lines.map((line) => `- ${line.text} ([source](${line.url}))`).join("\n");
   });

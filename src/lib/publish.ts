@@ -39,7 +39,9 @@ export async function publishToGithub(input: PublishInput): Promise<PublishResul
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
   });
-  const body = (await response.json().catch(() => null)) as (PublishResult & { error?: string }) | null;
-  if (!response.ok || !body) throw new Error(body?.error ?? `Publishing failed (${response.status}).`);
+  const body = (await response.json().catch(() => null)) as
+    (PublishResult & { error?: string }) | null;
+  if (!response.ok || !body)
+    throw new Error(body?.error ?? `Publishing failed (${response.status}).`);
   return body;
 }

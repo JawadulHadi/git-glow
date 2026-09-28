@@ -10,13 +10,13 @@ The code report gives a short, sourced summary of a project.
 
 ## Sources
 
-| Source | What is collected |
-| --- | --- |
-| GitHub | Description, stars, forks, open issues and pull requests, licence, languages, top contributors, recent releases, recent commits |
-| GitLab | Description, stars, forks, languages, recent releases, recent commits (public projects) |
-| Bitbucket | Description, main language, dates, recent commits (public repositories) |
-| npm | Latest version, licence, number of versions, downloads in the last month |
-| PyPI | Latest version, number of versions, downloads in the last month |
+| Source    | What is collected                                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub    | Description, stars, forks, open issues and pull requests, licence, languages, top contributors, recent releases, recent commits |
+| GitLab    | Description, stars, forks, languages, recent releases, recent commits (public projects)                                         |
+| Bitbucket | Description, main language, dates, recent commits (public repositories)                                                         |
+| npm       | Latest version, licence, number of versions, downloads in the last month                                                        |
+| PyPI      | Latest version, number of versions, downloads in the last month                                                                 |
 
 Results are cached for 10 minutes. When a source cannot be reached, the report says so instead of filling the gap.
 
