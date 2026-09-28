@@ -70,16 +70,19 @@ function encode(content: string): string {
 }
 
 async function putFile(
+  key: string,
   base: string,
   branch: string,
   path: string,
   content: string,
   message: string,
 ): Promise<PublishStep> {
-  const existing = await githubRequest<ContentInfo>(
+  const existing = await gh<ContentInfo>(
     `${base}/contents/${path}?ref=${encodeURIComponent(branch)}`,
+    {},
+    key,
   );
-  const result = await githubRequest<{ content: { html_url: string } }>(
+  const result = await gh<{ content: { html_url: string } }>(
     `${base}/contents/${path}`,
     {
       method: "PUT",
@@ -133,10 +136,11 @@ export const Route = createFileRoute("/api/github-publish")({
 
         if (input.brand) {
           steps.push(
-            await putFile(base, branch, BRAND_LOGO_PATH, buildLogoSvg(), "docs: add studio logo"),
+            await putFile(connection.key, base, branch, BRAND_LOGO_PATH, buildLogoSvg(), "docs: add studio logo"),
           );
           steps.push(
             await putFile(
+              connection.key,
               base,
               branch,
               BRAND_BANNER_PATH,
@@ -150,6 +154,7 @@ export const Route = createFileRoute("/api/github-publish")({
           const readme = input.brand ? withBrandHeader(input.readme, input.repo) : input.readme;
           steps.push(
             await putFile(
+              connection.key,
               base,
               branch,
               "README.md",
@@ -162,6 +167,7 @@ export const Route = createFileRoute("/api/github-publish")({
         for (const file of input.files ?? []) {
           steps.push(
             await putFile(
+              connection.key,
               base,
               branch,
               file.path,
@@ -286,7 +292,8 @@ export const Route = createFileRoute("/api/github-publish")({
           });
         }
 
-        return Response.json({ steps, checks });
+        await recordUsage("publish", steps.every((step) => step.ok));
+        return Response.json({ steps, checks, repoUrl: repo.data.html_url });
       },
     },
   },
