@@ -35,7 +35,7 @@ const requestSchema = z.object({
         .trim()
         .min(1)
         .max(100)
-        .regex(/^[A-Za-z0-9._\/-]+$/),
+        .regex(/^[A-Za-z0-9._/-]+$/),
       name: z.string().trim().max(200),
       notes: z.string().max(20000),
     })
@@ -48,7 +48,7 @@ const requestSchema = z.object({
           .trim()
           .min(1)
           .max(200)
-          .regex(/^(docs|\.github)\/[A-Za-z0-9._\/-]+\.md$/),
+          .regex(/^(docs|\.github)\/[A-Za-z0-9._/-]+\.md$/),
         content: z.string().max(60000),
       }),
     )

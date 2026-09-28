@@ -4,15 +4,15 @@ export type PublishInput = {
   accessCode: string;
   owner: string;
   repo: string;
-  readme?: string;
-  description?: string;
-  topics?: string[];
-  release?: { tag: string; name: string; notes: string };
-  files?: PublishFile[];
-  brand?: { title: string; tagline: string };
+  readme?: string | undefined;
+  description?: string | undefined;
+  topics?: string[] | undefined;
+  release?: { tag: string; name: string; notes: string } | undefined;
+  files?: PublishFile[] | undefined;
+  brand?: { title: string; tagline: string } | undefined;
 };
 
-export type PublishStep = { label: string; ok: boolean; detail: string; url?: string };
+export type PublishStep = { label: string; ok: boolean; detail: string; url?: string | undefined };
 
 export type PublishResult = { steps: PublishStep[]; checks: PublishStep[] };
 
