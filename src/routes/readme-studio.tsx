@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type FormEvent } from "react";
-import { Check, Copy, Loader2, Sparkles, Square } from "lucide-react";
+import { Check, Copy, Github, Loader2, Sparkles, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageIntro } from "@/components/page-intro";
-import { streamReadmeDraft } from "@/lib/readme-draft";
+import { buildGithubPublishUrl, streamReadmeDraft, withBrandHeader } from "@/lib/readme-draft";
 
 export const Route = createFileRoute("/readme-studio")({
   head: () => ({
@@ -35,6 +35,7 @@ function ReadmeStudio() {
   const [error, setError] = useState<string | null>(null);
   const [isDrafting, setIsDrafting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [publishNote, setPublishNote] = useState<string | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
 
   async function handleSubmit(event: FormEvent) {
@@ -60,9 +61,23 @@ function ReadmeStudio() {
   }
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(draft);
+    await navigator.clipboard.writeText(withBrandHeader(draft));
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
+  }
+
+  async function handlePublish() {
+    const content = withBrandHeader(draft);
+    const { url, prefilled } = buildGithubPublishUrl(repositoryName, content);
+    if (prefilled) {
+      setPublishNote("GitHub opened with your README ready. Review it and commit.");
+    } else {
+      await navigator.clipboard.writeText(content);
+      setPublishNote(
+        "This README is too long to pre-fill, so it's copied. Paste it into the GitHub editor that opened.",
+      );
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -142,19 +157,30 @@ function ReadmeStudio() {
           className="glass-panel flex min-h-96 flex-col rounded-lg p-6"
           aria-label="Draft README"
         >
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-display text-lg font-semibold">Draft</h2>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={!draft || isDrafting}
-              onClick={handleCopy}
-            >
-              {copied ? <Check /> : <Copy />}
-              {copied ? "Copied" : "Copy markdown"}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={!draft || isDrafting}
+                onClick={handleCopy}
+              >
+                {copied ? <Check /> : <Copy />}
+                {copied ? "Copied" : "Copy markdown"}
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                disabled={!draft || isDrafting}
+                onClick={handlePublish}
+              >
+                <Github /> Publish to GitHub
+              </Button>
+            </div>
           </div>
+          {publishNote && <p className="mb-3 text-xs text-muted-foreground">{publishNote}</p>}
           {draft ? (
             <pre className="flex-1 overflow-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-foreground/90">
               {draft}

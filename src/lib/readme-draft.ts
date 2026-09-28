@@ -6,6 +6,34 @@ export type ReadmeDraftInput = {
 };
 
 const ERROR_MARKER = "[[error]]";
+const SITE_URL = "https://repo-radiance-forge.lovable.app";
+const GITHUB_OWNER = "JawadulHadi";
+const MAX_PREFILL_URL_LENGTH = 7000;
+
+/** Adds the brand banner cover and portrait mark to the top of a README. */
+export function withBrandHeader(draft: string): string {
+  const header = `<p align="center">
+  <img src="${SITE_URL}/brand/banner.png" alt="Jawad Ul Hadi banner" width="100%" />
+</p>
+<p align="center">
+  <img src="${SITE_URL}/brand/logo-mark.png" alt="Jawad Ul Hadi" width="96" />
+</p>
+
+`;
+  return header + draft.trim() + "\n";
+}
+
+/** Builds a GitHub link that opens a new README pre-filled with the content, when it fits in a URL. */
+export function buildGithubPublishUrl(
+  repositoryName: string,
+  content: string,
+): { url: string; prefilled: boolean } {
+  const repo = repositoryName.trim().replace(/^.*\//, "");
+  const base = `https://github.com/${GITHUB_OWNER}/${encodeURIComponent(repo)}`;
+  const prefillUrl = `${base}/new/main?filename=README.md&value=${encodeURIComponent(content)}`;
+  if (prefillUrl.length <= MAX_PREFILL_URL_LENGTH) return { url: prefillUrl, prefilled: true };
+  return { url: `${base}/edit/main/README.md`, prefilled: false };
+}
 
 /** Splits streamed text into the draft and an optional in-stream error. */
 export function splitDraftError(text: string): { draft: string; error: string | null } {
