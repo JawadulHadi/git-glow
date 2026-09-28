@@ -14,6 +14,8 @@ import { Route as CaseStudyRouteImport } from './routes/case-study'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ReadmeStudioRouteImport } from './routes/readme-studio'
+import { Route as ApiReadmeDraftRouteImport } from './routes/api/readme-draft'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +42,16 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadmeStudioRoute = ReadmeStudioRouteImport.update({
+  id: '/readme-studio',
+  path: '/readme-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiReadmeDraftRoute = ApiReadmeDraftRouteImport.update({
+  id: '/api/readme-draft',
+  path: '/api/readme-draft',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,8 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/credentials': typeof CredentialsRoute
   '/projects': typeof ProjectsRoute
+  '/readme-studio': typeof ReadmeStudioRoute
+  '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +68,8 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/credentials': typeof CredentialsRoute
   '/projects': typeof ProjectsRoute
+  '/readme-studio': typeof ReadmeStudioRoute
+  '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,14 +78,37 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/credentials': typeof CredentialsRoute
   '/projects': typeof ProjectsRoute
+  '/readme-studio': typeof ReadmeStudioRoute
+  '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/case-study' | '/contact' | '/credentials' | '/projects'
+  fullPaths:
+    | '/'
+    | '/case-study'
+    | '/contact'
+    | '/credentials'
+    | '/projects'
+    | '/readme-studio'
+    | '/api/readme-draft'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/case-study' | '/contact' | '/credentials' | '/projects'
+  to:
+    | '/'
+    | '/case-study'
+    | '/contact'
+    | '/credentials'
+    | '/projects'
+    | '/readme-studio'
+    | '/api/readme-draft'
   id:
-    '__root__' | '/' | '/case-study' | '/contact' | '/credentials' | '/projects'
+    | '__root__'
+    | '/'
+    | '/case-study'
+    | '/contact'
+    | '/credentials'
+    | '/projects'
+    | '/readme-studio'
+    | '/api/readme-draft'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -78,6 +117,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CredentialsRoute: typeof CredentialsRoute
   ProjectsRoute: typeof ProjectsRoute
+  ReadmeStudioRoute: typeof ReadmeStudioRoute
+  ApiReadmeDraftRoute: typeof ApiReadmeDraftRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,6 +158,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/readme-studio': {
+      id: '/readme-studio'
+      path: '/readme-studio'
+      fullPath: '/readme-studio'
+      preLoaderRoute: typeof ReadmeStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/readme-draft': {
+      id: '/api/readme-draft'
+      path: '/api/readme-draft'
+      fullPath: '/api/readme-draft'
+      preLoaderRoute: typeof ApiReadmeDraftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -126,6 +181,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CredentialsRoute: CredentialsRoute,
   ProjectsRoute: ProjectsRoute,
+  ReadmeStudioRoute: ReadmeStudioRoute,
+  ApiReadmeDraftRoute: ApiReadmeDraftRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
