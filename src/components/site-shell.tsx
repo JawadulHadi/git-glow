@@ -2,6 +2,17 @@ import { Link } from "@tanstack/react-router";
 import { FileText } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/hooks/use-session";
+
+function AccountLink() {
+  const { session, ready } = useSession();
+  if (!ready) return null;
+  return (
+    <Button asChild variant="outline" size="sm">
+      {session ? <Link to="/owner">Owner panel</Link> : <Link to="/auth">Sign in</Link>}
+    </Button>
+  );
+}
 
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
@@ -28,6 +39,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <Button asChild variant="ghost" size="sm">
               <Link to="/code-report">Code report</Link>
             </Button>
+            <AccountLink />
           </nav>
         </div>
       </header>

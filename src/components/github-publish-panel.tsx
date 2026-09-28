@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { CheckCircle2, Copy, ExternalLink, Github, Loader2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { GithubAccount } from "@/components/github-account";
 import { appDocs } from "@/lib/app-docs";
 import {
   parseTopics,
@@ -70,7 +71,12 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
   const [releaseNotes, setReleaseNotes] = useState("");
   const [copiedPath, setCopiedPath] = useState<string | null>(null);
 
-  const mutation = useMutation({ mutationFn: (input: PublishInput) => publishToGithub(input) });
+  const mutation = useMutation({
+    mutationFn: (input: PublishInput) => publishToGithub(input),
+    onSuccess: (result) => {
+      if (result.repoUrl) window.open(result.repoUrl, "_blank", "noopener");
+    },
+  });
 
   const allFiles = [...files, ...(includeAppDocs ? appDocs : [])];
 
@@ -106,9 +112,11 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
           Publish to {owner || "owner"}/{repo || "repository"}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Uses the connected GitHub account. The studio checks the repository afterwards.
+          Publishes with your own GitHub account, checks the repository, then opens it.
         </p>
       </div>
+
+      <GithubAccount />
 
       <div className="space-y-3">
         {readme ? (
