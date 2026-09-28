@@ -7,9 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in · README Studio" },
+      { title: "Sign in · repo.io" },
       { name: "description", content: "Sign in to connect GitHub or manage the studio." },
-      { property: "og:title", content: "Sign in · README Studio" },
+      { property: "og:title", content: "Sign in · repo.io" },
       { property: "og:description", content: "Sign in to connect GitHub or manage the studio." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

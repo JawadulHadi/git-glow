@@ -15,9 +15,9 @@ import {
 export const Route = createFileRoute("/_authenticated/owner")({
   head: () => ({
     meta: [
-      { title: "Owner panel · README Studio" },
+      { title: "Owner panel · repo.io" },
       { name: "description", content: "Manage the studio access code and see usage." },
-      { property: "og:title", content: "Owner panel · README Studio" },
+      { property: "og:title", content: "Owner panel · repo.io" },
       { property: "og:description", content: "Manage the studio access code and see usage." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

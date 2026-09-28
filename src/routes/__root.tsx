@@ -79,9 +79,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "author", content: "README Studio" },
+      { name: "author", content: "repo.io" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "README Studio" },
+      { property: "og:site_name", content: "repo.io" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [

@@ -10,13 +10,13 @@ import { parseRepoUrl } from "@/lib/sources";
 export const Route = createFileRoute("/code-report")({
   head: () => ({
     meta: [
-      { title: "Code report · README Studio" },
+      { title: "Code report · repo.io" },
       {
         name: "description",
         content:
           "Short, sourced reports on a repository's history, releases and packages, with AI interpretation kept separate.",
       },
-      { property: "og:title", content: "Code report · README Studio" },
+      { property: "og:title", content: "Code report · repo.io" },
       {
         property: "og:description",
         content:

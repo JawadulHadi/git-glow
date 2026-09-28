@@ -1,4 +1,4 @@
-# Product review: From README Studio to Code Report Studio
+# Product review: From repo.io to Code Report Studio
 
 ## Status
 
@@ -61,4 +61,4 @@ Add selected external sources one at a time, with explicit permissions and citat
 
 ## Recommendation
 
-Launch the neutral README Studio first, then validate demand for repository reports. Build GitHub analysis next; do not begin with an undefined “all platforms” promise.
+Launch the neutral repo.io first, then validate demand for repository reports. Build GitHub analysis next; do not begin with an undefined “all platforms” promise.

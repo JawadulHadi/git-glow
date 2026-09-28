@@ -1,6 +1,6 @@
-# README Studio overview
+# repo.io overview
 
-README Studio is a private workspace for writing accurate repository documentation and short code reports. Everything is behind an owner access code.
+repo.io is a private workspace for writing accurate repository documentation and short code reports. Everything is behind an owner access code.
 
 ## What it does
 
