@@ -93,6 +93,7 @@ async function putFile(
         ...(existing.ok ? { sha: existing.data.sha } : {}),
       },
     },
+    key,
   );
   if (!result.ok) return { label: path, ok: false, detail: result.message };
   return {
