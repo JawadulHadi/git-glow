@@ -6,5 +6,5 @@
 - [x] Add verified public GitHub activity and separate curated project milestones.
 - [x] Create the coordinated GitHub profile README package.
 - [x] Complete browser and code-quality verification.
-- [ ] README studio: owner-only AI README drafting page
-- [ ] Brand kit ZIP: logo, portrait mark, banner in repo-ready sizes/formats
+- [x] README studio: owner-only AI README drafting page
+- [x] Brand kit ZIP: logo, portrait mark, banner in repo-ready sizes/formats
