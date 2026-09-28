@@ -3,13 +3,15 @@ const GATEWAY_URL = "https://connector-gateway.lovable.dev/github";
 export type GithubResult<T> =
   { ok: true; status: number; data: T } | { ok: false; status: number; message: string };
 
-/** Calls the GitHub REST API through the connected GitHub account. */
+/** Calls the GitHub REST API through the gateway, as the visitor when userKey is given. */
 export async function githubRequest<T>(
   path: string,
   init: { method?: string; body?: unknown } = {},
+  userKey?: string,
 ): Promise<GithubResult<T>> {
   const lovableKey = process.env["LOVABLE_API_KEY"];
-  const githubKey = process.env["GITHUB_API_KEY"];
+  // A visitor's own GitHub connection wins; the shared connection is only a public-read fallback.
+  const githubKey = userKey ?? process.env["GITHUB_API_KEY"];
   if (!lovableKey || !githubKey) {
     return { ok: false, status: 500, message: "GitHub is not connected to this studio." };
   }

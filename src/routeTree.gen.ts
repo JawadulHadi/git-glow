@@ -10,15 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CodeReportRouteImport } from './routes/code-report'
 import { Route as ReadmeStudioRouteImport } from './routes/readme-studio'
+import { Route as AuthenticatedOwnerRouteImport } from './routes/_authenticated/owner'
 import { Route as ApiCodeReportRouteImport } from './routes/api/code-report'
 import { Route as ApiGithubPublishRouteImport } from './routes/api/github-publish'
 import { Route as ApiReadmeDraftRouteImport } from './routes/api/readme-draft'
+import { Route as OauthGithubReturnRouteImport } from './routes/oauth/github/return'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CodeReportRoute = CodeReportRouteImport.update({
@@ -30,6 +43,11 @@ const ReadmeStudioRoute = ReadmeStudioRouteImport.update({
   id: '/readme-studio',
   path: '/readme-studio',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedOwnerRoute = AuthenticatedOwnerRouteImport.update({
+  id: '/owner',
+  path: '/owner',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiCodeReportRoute = ApiCodeReportRouteImport.update({
   id: '/api/code-report',
@@ -46,66 +64,94 @@ const ApiReadmeDraftRoute = ApiReadmeDraftRouteImport.update({
   path: '/api/readme-draft',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OauthGithubReturnRoute = OauthGithubReturnRouteImport.update({
+  id: '/oauth/github/return',
+  path: '/oauth/github/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/code-report': typeof CodeReportRoute
   '/readme-studio': typeof ReadmeStudioRoute
+  '/owner': typeof AuthenticatedOwnerRoute
   '/api/code-report': typeof ApiCodeReportRoute
   '/api/github-publish': typeof ApiGithubPublishRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
+  '/oauth/github/return': typeof OauthGithubReturnRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/code-report': typeof CodeReportRoute
   '/readme-studio': typeof ReadmeStudioRoute
+  '/owner': typeof AuthenticatedOwnerRoute
   '/api/code-report': typeof ApiCodeReportRoute
   '/api/github-publish': typeof ApiGithubPublishRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
+  '/oauth/github/return': typeof OauthGithubReturnRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/code-report': typeof CodeReportRoute
   '/readme-studio': typeof ReadmeStudioRoute
+  '/_authenticated/owner': typeof AuthenticatedOwnerRoute
   '/api/code-report': typeof ApiCodeReportRoute
   '/api/github-publish': typeof ApiGithubPublishRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
+  '/oauth/github/return': typeof OauthGithubReturnRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/code-report'
     | '/readme-studio'
+    | '/owner'
     | '/api/code-report'
     | '/api/github-publish'
     | '/api/readme-draft'
+    | '/oauth/github/return'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/code-report'
     | '/readme-studio'
+    | '/owner'
     | '/api/code-report'
     | '/api/github-publish'
     | '/api/readme-draft'
+    | '/oauth/github/return'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/code-report'
     | '/readme-studio'
+    | '/_authenticated/owner'
     | '/api/code-report'
     | '/api/github-publish'
     | '/api/readme-draft'
+    | '/oauth/github/return'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   CodeReportRoute: typeof CodeReportRoute
   ReadmeStudioRoute: typeof ReadmeStudioRoute
   ApiCodeReportRoute: typeof ApiCodeReportRoute
   ApiGithubPublishRoute: typeof ApiGithubPublishRoute
   ApiReadmeDraftRoute: typeof ApiReadmeDraftRoute
+  OauthGithubReturnRoute: typeof OauthGithubReturnRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +161,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/code-report': {
@@ -130,6 +190,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/readme-studio'
       preLoaderRoute: typeof ReadmeStudioRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/owner': {
+      id: '/_authenticated/owner'
+      path: '/owner'
+      fullPath: '/owner'
+      preLoaderRoute: typeof AuthenticatedOwnerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/code-report': {
       id: '/api/code-report'
@@ -152,16 +219,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiReadmeDraftRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/oauth/github/return': {
+      id: '/oauth/github/return'
+      path: '/oauth/github/return'
+      fullPath: '/oauth/github/return'
+      preLoaderRoute: typeof OauthGithubReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedOwnerRoute: typeof AuthenticatedOwnerRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedOwnerRoute: AuthenticatedOwnerRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   CodeReportRoute: CodeReportRoute,
   ReadmeStudioRoute: ReadmeStudioRoute,
   ApiCodeReportRoute: ApiCodeReportRoute,
   ApiGithubPublishRoute: ApiGithubPublishRoute,
   ApiReadmeDraftRoute: ApiReadmeDraftRoute,
+  OauthGithubReturnRoute: OauthGithubReturnRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

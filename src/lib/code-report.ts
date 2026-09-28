@@ -1,3 +1,4 @@
+import { authHeaders } from "./auth-header";
 import { splitDraftError } from "./readme-draft";
 
 export type CodeReportInput = {
@@ -16,7 +17,7 @@ export async function streamCodeReport(
 ): Promise<string> {
   const response = await fetch("/api/code-report", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: await authHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify(input),
     signal,
   });

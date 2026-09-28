@@ -14,3 +14,7 @@
 - [x] Publish to GitHub: README, brand SVGs, docs, description, topics, tag and Release, with re-read checklist
 - [x] Neutral SVG logo and banner; studio documentation in docs/
 - [ ] Live publish test on a real repository (waiting for the user to name a target repo)
+- [x] Visitor GitHub sign-in: reports read real repos, publish writes to the visitor's repo and opens it
+- [x] Owner panel: email sign-in, set/reset access code, usage stats
+- [x] Rename the app to repo.io
+- [ ] Connect the repo.io domain (waiting: user must confirm they own repo.io)

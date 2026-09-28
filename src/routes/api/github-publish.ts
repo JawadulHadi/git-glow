@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { checkOwner, jsonError } from "@/lib/ai-stream.server";
-import { githubRequest, repoPath } from "@/lib/github-gateway.server";
+import { getRequestUserId } from "@/lib/request-user.server";
+import { getGithubConnection } from "@/lib/app-user-connections.server";
+import { recordUsage } from "@/lib/studio-settings.server";
+import { githubRequest as gh, repoPath } from "@/lib/github-gateway.server";
 import {
   BRAND_BANNER_PATH,
   BRAND_LOGO_PATH,
@@ -67,16 +70,19 @@ function encode(content: string): string {
 }
 
 async function putFile(
+  key: string,
   base: string,
   branch: string,
   path: string,
   content: string,
   message: string,
 ): Promise<PublishStep> {
-  const existing = await githubRequest<ContentInfo>(
+  const existing = await gh<ContentInfo>(
     `${base}/contents/${path}?ref=${encodeURIComponent(branch)}`,
+    {},
+    key,
   );
-  const result = await githubRequest<{ content: { html_url: string } }>(
+  const result = await gh<{ content: { html_url: string } }>(
     `${base}/contents/${path}`,
     {
       method: "PUT",
@@ -87,6 +93,7 @@ async function putFile(
         ...(existing.ok ? { sha: existing.data.sha } : {}),
       },
     },
+    key,
   );
   if (!result.ok) return { label: path, ok: false, detail: result.message };
   return {
@@ -106,8 +113,14 @@ export const Route = createFileRoute("/api/github-publish")({
           return jsonError(400, "Please check the owner, repository, tag and file names.");
         }
         const input = parsed.data;
-        const denied = checkOwner(input.accessCode);
+        const denied = await checkOwner(input.accessCode);
         if (denied) return denied;
+        const userId = await getRequestUserId(request);
+        if (!userId) return jsonError(401, "Sign in and connect your GitHub account to publish.");
+        const connection = await getGithubConnection(userId);
+        if (!connection) return jsonError(403, "Connect your GitHub account to publish.");
+        const githubRequest = <T>(path: string, init: { method?: string; body?: unknown } = {}) =>
+          gh<T>(path, init, connection.key);
 
         const base = repoPath(input.owner, input.repo);
         const repo = await githubRequest<RepoInfo>(base);
@@ -124,10 +137,18 @@ export const Route = createFileRoute("/api/github-publish")({
 
         if (input.brand) {
           steps.push(
-            await putFile(base, branch, BRAND_LOGO_PATH, buildLogoSvg(), "docs: add studio logo"),
+            await putFile(
+              connection.key,
+              base,
+              branch,
+              BRAND_LOGO_PATH,
+              buildLogoSvg(),
+              "docs: add studio logo",
+            ),
           );
           steps.push(
             await putFile(
+              connection.key,
               base,
               branch,
               BRAND_BANNER_PATH,
@@ -141,6 +162,7 @@ export const Route = createFileRoute("/api/github-publish")({
           const readme = input.brand ? withBrandHeader(input.readme, input.repo) : input.readme;
           steps.push(
             await putFile(
+              connection.key,
               base,
               branch,
               "README.md",
@@ -153,6 +175,7 @@ export const Route = createFileRoute("/api/github-publish")({
         for (const file of input.files ?? []) {
           steps.push(
             await putFile(
+              connection.key,
               base,
               branch,
               file.path,
@@ -277,7 +300,11 @@ export const Route = createFileRoute("/api/github-publish")({
           });
         }
 
-        return Response.json({ steps, checks });
+        await recordUsage(
+          "publish",
+          steps.every((step) => step.ok),
+        );
+        return Response.json({ steps, checks, repoUrl: repo.data.html_url });
       },
     },
   },

@@ -1,3 +1,4 @@
+import { authHeaders } from "./auth-header";
 export type PublishFile = { path: string; content: string };
 
 export type PublishInput = {
@@ -14,7 +15,7 @@ export type PublishInput = {
 
 export type PublishStep = { label: string; ok: boolean; detail: string; url?: string | undefined };
 
-export type PublishResult = { steps: PublishStep[]; checks: PublishStep[] };
+export type PublishResult = { steps: PublishStep[]; checks: PublishStep[]; repoUrl?: string };
 
 /** Turns a comma-separated list into valid GitHub topics (lowercase, hyphens, max 20). */
 export function parseTopics(value: string): string[] {
@@ -36,7 +37,7 @@ export function parseTopics(value: string): string[] {
 export async function publishToGithub(input: PublishInput): Promise<PublishResult> {
   const response = await fetch("/api/github-publish", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: await authHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify(input),
   });
   const body = (await response.json().catch(() => null)) as

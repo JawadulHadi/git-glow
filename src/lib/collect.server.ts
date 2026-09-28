@@ -60,17 +60,17 @@ type GhRelease = {
 };
 type GhContributor = { login: string; contributions: number; html_url: string };
 
-async function collectGithub(ref: RepoRef): Promise<SourceFacts> {
+async function collectGithub(ref: RepoRef, userKey?: string): Promise<SourceFacts> {
   const base = repoPath(ref.owner, ref.repo);
   const url = `https://github.com/${ref.owner}/${ref.repo}`;
   const source = `GitHub · ${ref.owner}/${ref.repo}`;
-  const repo = await githubRequest<GhRepo>(base);
+  const repo = await githubRequest<GhRepo>(base, {}, userKey);
   if (!repo.ok) return unavailable(source, url, repo.status);
   const [languages, commits, releases, contributors] = await Promise.all([
-    githubRequest<Record<string, number>>(`${base}/languages`),
-    githubRequest<GhCommit[]>(`${base}/commits?per_page=8`),
-    githubRequest<GhRelease[]>(`${base}/releases?per_page=5`),
-    githubRequest<GhContributor[]>(`${base}/contributors?per_page=5`),
+    githubRequest<Record<string, number>>(`${base}/languages`, {}, userKey),
+    githubRequest<GhCommit[]>(`${base}/commits?per_page=8`, {}, userKey),
+    githubRequest<GhRelease[]>(`${base}/releases?per_page=5`, {}, userKey),
+    githubRequest<GhContributor[]>(`${base}/contributors?per_page=5`, {}, userKey),
   ]);
   const r = repo.data;
   const lines: FactLine[] = [
@@ -297,6 +297,7 @@ export async function collectFacts(input: {
   repo: RepoRef | null;
   npmPackage?: string | undefined;
   pypiPackage?: string | undefined;
+  githubUserKey?: string | undefined;
 }): Promise<SourceFacts[]> {
   const jobs: Promise<SourceFacts>[] = [];
   const { repo, npmPackage, pypiPackage } = input;
@@ -308,7 +309,12 @@ export async function collectFacts(input: {
         : repo.host === "gitlab"
           ? collectGitlab
           : collectBitbucket;
-    jobs.push(cached(key, () => loader(repo)));
+    if (repo.host === "github" && input.githubUserKey) {
+      // Never cache results read with a visitor's own access: they may include private repos.
+      jobs.push(collectGithub(repo, input.githubUserKey));
+    } else {
+      jobs.push(cached(key, () => loader(repo)));
+    }
   }
   if (npmPackage) jobs.push(cached(`npm:${npmPackage}`, () => collectNpm(npmPackage)));
   if (pypiPackage) jobs.push(cached(`pypi:${pypiPackage}`, () => collectPypi(pypiPackage)));
