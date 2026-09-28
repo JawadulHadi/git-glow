@@ -73,7 +73,14 @@ function AuthPage() {
         </div>
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Email</span>
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" className={fieldClass} />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            className={fieldClass}
+          />
         </label>
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Password</span>
@@ -87,8 +94,16 @@ function AuthPage() {
             className={fieldClass}
           />
         </label>
-        {error ? <p className="text-sm text-destructive" role="alert">{error}</p> : null}
-        {notice ? <p className="text-sm text-primary" role="status">{notice}</p> : null}
+        {error ? (
+          <p className="text-sm text-destructive" role="alert">
+            {error}
+          </p>
+        ) : null}
+        {notice ? (
+          <p className="text-sm text-primary" role="status">
+            {notice}
+          </p>
+        ) : null}
         <Button type="submit" className="w-full" disabled={busy}>
           {busy ? <Loader2 className="animate-spin" /> : null}
           {mode === "sign-in" ? "Sign in" : "Create account"}

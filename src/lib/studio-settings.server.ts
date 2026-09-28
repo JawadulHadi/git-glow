@@ -15,7 +15,10 @@ async function admin() {
   return supabaseAdmin;
 }
 
-export async function getStoredCodeInfo(): Promise<{ hash: string | null; updatedAt: string | null }> {
+export async function getStoredCodeInfo(): Promise<{
+  hash: string | null;
+  updatedAt: string | null;
+}> {
   const db = await admin();
   const { data } = await db
     .from("studio_settings")
@@ -36,7 +39,11 @@ export async function storeAccessCode(code: string): Promise<void> {
 /** Checks a code against the stored hash, falling back to the original site secret. */
 export async function accessCodeValid(code: string): Promise<boolean | "unconfigured"> {
   const { hash } = await getStoredCodeInfo();
-  const expected = hash ?? (process.env["README_STUDIO_ACCESS_CODE"] ? hashCode(process.env["README_STUDIO_ACCESS_CODE"]) : null);
+  const expected =
+    hash ??
+    (process.env["README_STUDIO_ACCESS_CODE"]
+      ? hashCode(process.env["README_STUDIO_ACCESS_CODE"])
+      : null);
   if (!expected) return "unconfigured";
   return sameHash(hashCode(code), expected);
 }

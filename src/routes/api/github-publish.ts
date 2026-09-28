@@ -119,7 +119,7 @@ export const Route = createFileRoute("/api/github-publish")({
         if (!userId) return jsonError(401, "Sign in and connect your GitHub account to publish.");
         const connection = await getGithubConnection(userId);
         if (!connection) return jsonError(403, "Connect your GitHub account to publish.");
-        const githubRequest = <T,>(path: string, init: { method?: string; body?: unknown } = {}) =>
+        const githubRequest = <T>(path: string, init: { method?: string; body?: unknown } = {}) =>
           gh<T>(path, init, connection.key);
 
         const base = repoPath(input.owner, input.repo);
@@ -137,7 +137,14 @@ export const Route = createFileRoute("/api/github-publish")({
 
         if (input.brand) {
           steps.push(
-            await putFile(connection.key, base, branch, BRAND_LOGO_PATH, buildLogoSvg(), "docs: add studio logo"),
+            await putFile(
+              connection.key,
+              base,
+              branch,
+              BRAND_LOGO_PATH,
+              buildLogoSvg(),
+              "docs: add studio logo",
+            ),
           );
           steps.push(
             await putFile(
@@ -293,7 +300,10 @@ export const Route = createFileRoute("/api/github-publish")({
           });
         }
 
-        await recordUsage("publish", steps.every((step) => step.ok));
+        await recordUsage(
+          "publish",
+          steps.every((step) => step.ok),
+        );
         return Response.json({ steps, checks, repoUrl: repo.data.html_url });
       },
     },

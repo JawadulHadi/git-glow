@@ -118,8 +118,13 @@ function OwnerPanel() {
           <p className="text-sm text-muted-foreground">
             No owner is set yet. The first account to claim it becomes the only owner.
           </p>
-          <Button type="button" onClick={() => claimMutation.mutate()} disabled={claimMutation.isPending}>
-            {claimMutation.isPending ? <Loader2 className="animate-spin" /> : null} Make me the owner
+          <Button
+            type="button"
+            onClick={() => claimMutation.mutate()}
+            disabled={claimMutation.isPending}
+          >
+            {claimMutation.isPending ? <Loader2 className="animate-spin" /> : null} Make me the
+            owner
           </Button>
           {claimMutation.error ? (
             <p className="text-sm text-destructive">{claimMutation.error.message}</p>
@@ -172,12 +177,21 @@ function OwnerPanel() {
             {revealed ? (
               <div className="flex items-center justify-between gap-2 rounded-md border border-primary/40 bg-primary/10 px-3 py-2">
                 <code className="font-mono text-sm">{revealed}</code>
-                <Button type="button" size="sm" variant="ghost" onClick={() => navigator.clipboard.writeText(revealed)}>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => navigator.clipboard.writeText(revealed)}
+                >
                   <Copy /> Copy
                 </Button>
               </div>
             ) : null}
-            {notice ? <p className="text-sm text-primary" role="status">{notice}</p> : null}
+            {notice ? (
+              <p className="text-sm text-primary" role="status">
+                {notice}
+              </p>
+            ) : null}
             {saveMutation.error || resetMutation.error ? (
               <p className="text-sm text-destructive" role="alert">
                 {(saveMutation.error ?? resetMutation.error)?.message}
@@ -233,7 +247,10 @@ function OwnerPanel() {
             {data.recent.length ? (
               <ul className="mt-3 space-y-1.5 text-sm">
                 {data.recent.map((event) => (
-                  <li key={event.createdAt + event.kind} className="flex justify-between gap-3 border-t border-border/60 pt-1.5">
+                  <li
+                    key={event.createdAt + event.kind}
+                    className="flex justify-between gap-3 border-t border-border/60 pt-1.5"
+                  >
                     <span>{kindLabel[event.kind] ?? event.kind}</span>
                     <span className={event.ok ? "text-muted-foreground" : "text-destructive"}>
                       {event.ok ? "OK" : "Failed"} · {formatDateTime(event.createdAt)}

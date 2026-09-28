@@ -2,7 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-export type UsageDay = { day: string; readme: number; report: number; publish: number; failed: number };
+export type UsageDay = {
+  day: string;
+  readme: number;
+  report: number;
+  publish: number;
+  failed: number;
+};
 export type UsageEvent = { kind: string; ok: boolean; createdAt: string };
 
 export type OwnerOverview =
@@ -17,7 +23,15 @@ export type OwnerOverview =
       recent: UsageEvent[];
     };
 
-async function isOwner(supabase: { rpc: (fn: "has_role", args: { _user_id: string; _role: "owner" }) => PromiseLike<{ data: boolean | null }> }, userId: string) {
+async function isOwner(
+  supabase: {
+    rpc: (
+      fn: "has_role",
+      args: { _user_id: string; _role: "owner" },
+    ) => PromiseLike<{ data: boolean | null }>;
+  },
+  userId: string,
+) {
   const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "owner" });
   return data === true;
 }
@@ -68,7 +82,11 @@ export const getOwnerOverview = createServerFn({ method: "GET" })
     }
     return {
       status: "owner",
-      codeSource: code.hash ? "panel" : process.env["README_STUDIO_ACCESS_CODE"] ? "site-secret" : "none",
+      codeSource: code.hash
+        ? "panel"
+        : process.env["README_STUDIO_ACCESS_CODE"]
+          ? "site-secret"
+          : "none",
       codeUpdatedAt: code.updatedAt,
       totals,
       days,
@@ -92,12 +110,11 @@ export const claimOwnership = createServerFn({ method: "POST" })
 export const setAccessCode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z
-      .object({ code: z.string().min(8, "Use at least 8 characters.").max(128) })
-      .parse(input),
+    z.object({ code: z.string().min(8, "Use at least 8 characters.").max(128) }).parse(input),
   )
   .handler(async ({ data, context }) => {
-    if (!(await isOwner(context.supabase, context.userId))) throw new Error("Only the owner can do this.");
+    if (!(await isOwner(context.supabase, context.userId)))
+      throw new Error("Only the owner can do this.");
     const { storeAccessCode } = await import("./studio-settings.server");
     await storeAccessCode(data.code);
     return { ok: true };
@@ -107,7 +124,8 @@ export const setAccessCode = createServerFn({ method: "POST" })
 export const resetAccessCode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    if (!(await isOwner(context.supabase, context.userId))) throw new Error("Only the owner can do this.");
+    if (!(await isOwner(context.supabase, context.userId)))
+      throw new Error("Only the owner can do this.");
     const { randomBytes } = await import("node:crypto");
     const code = randomBytes(12).toString("base64url");
     const { storeAccessCode } = await import("./studio-settings.server");

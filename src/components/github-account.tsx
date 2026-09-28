@@ -97,7 +97,9 @@ export function GithubAccount({ compact = false }: { compact?: boolean }) {
 
   if (!ready) return null;
 
-  const box = compact ? "space-y-2" : "rounded-md border border-border bg-background/40 p-4 space-y-2";
+  const box = compact
+    ? "space-y-2"
+    : "rounded-md border border-border bg-background/40 p-4 space-y-2";
 
   if (!session) {
     return (
@@ -123,7 +125,13 @@ export function GithubAccount({ compact = false }: { compact?: boolean }) {
             <Github className="size-4" aria-hidden="true" />
             Connected{data.login ? ` as @${data.login}` : ""}
           </p>
-          <Button type="button" size="sm" variant="ghost" onClick={handleDisconnect} disabled={busy}>
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={handleDisconnect}
+            disabled={busy}
+          >
             Disconnect
           </Button>
         </div>
@@ -140,7 +148,11 @@ export function GithubAccount({ compact = false }: { compact?: boolean }) {
           </Button>
         </div>
       )}
-      {message ? <p className="text-xs text-muted-foreground" role="status">{message}</p> : null}
+      {message ? (
+        <p className="text-xs text-muted-foreground" role="status">
+          {message}
+        </p>
+      ) : null}
     </div>
   );
 }

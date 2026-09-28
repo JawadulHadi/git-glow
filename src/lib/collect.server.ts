@@ -140,9 +140,9 @@ async function collectGitlab(ref: RepoRef): Promise<SourceFacts> {
   const project = await getJson<GlProject>(api);
   if (!project.ok) return unavailable(source, url, project.status);
   const [languages, commits, releases] = await Promise.all([
-    getJson<Record<string, number>>(`${api}/languages`, {}, userKey),
-    getJson<GlCommit[]>(`${api}/repository/commits?per_page=8`, {}, userKey),
-    getJson<GlRelease[]>(`${api}/releases?per_page=5`, {}, userKey),
+    getJson<Record<string, number>>(`${api}/languages`),
+    getJson<GlCommit[]>(`${api}/repository/commits?per_page=8`),
+    getJson<GlRelease[]>(`${api}/releases?per_page=5`),
   ]);
   const p = project.data;
   const lines: FactLine[] = [

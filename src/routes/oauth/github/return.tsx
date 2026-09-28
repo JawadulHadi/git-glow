@@ -12,7 +12,10 @@ function GithubReturn() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const notify = (type: "appUserConnectorOAuthComplete" | "appUserConnectorOAuthFailed", code?: string) => {
+    const notify = (
+      type: "appUserConnectorOAuthComplete" | "appUserConnectorOAuthFailed",
+      code?: string,
+    ) => {
       window.opener?.postMessage(
         { type, connectorId: "github", code: code ?? null },
         window.location.origin,
@@ -37,5 +40,9 @@ function GithubReturn() {
     notify("appUserConnectorOAuthComplete", code);
   }, []);
 
-  return <p className="mx-auto max-w-md px-5 py-20 text-center text-sm text-muted-foreground">{message}</p>;
+  return (
+    <p className="mx-auto max-w-md px-5 py-20 text-center text-sm text-muted-foreground">
+      {message}
+    </p>
+  );
 }

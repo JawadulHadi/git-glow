@@ -4,16 +4,14 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type GithubAccount =
-  | { connected: false; reconnectRequired?: boolean }
-  | { connected: true; login: string | null };
+  { connected: false; reconnectRequired?: boolean } | { connected: true; login: string | null };
 
 export const startGithubConnect = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { authorizeAppUserOAuth } = await import("@/integrations/lovable/appUserConnector");
-    const { getGithubConnection, GATEWAY_BASE_URL, GITHUB_CONNECTOR, GITHUB_SCOPES } = await import(
-      "./app-user-connections.server"
-    );
+    const { getGithubConnection, GATEWAY_BASE_URL, GITHUB_CONNECTOR, GITHUB_SCOPES } =
+      await import("./app-user-connections.server");
     const clientKey = process.env["GITHUB_APP_USER_CONNECTOR_CLIENT_API_KEY"];
     if (!clientKey) throw new Error("GitHub sign-in is not configured yet.");
     const request = getRequest();
@@ -41,17 +39,16 @@ export const completeGithubConnect = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => z.object({ code: z.string().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
-    const { exchangeAppUserOAuthCode, callAsAppUser } = await import(
-      "@/integrations/lovable/appUserConnector"
-    );
-    const { saveGithubConnection, GATEWAY_BASE_URL, GITHUB_CONNECTOR } = await import(
-      "./app-user-connections.server"
-    );
+    const { exchangeAppUserOAuthCode, callAsAppUser } =
+      await import("@/integrations/lovable/appUserConnector");
+    const { saveGithubConnection, GATEWAY_BASE_URL, GITHUB_CONNECTOR } =
+      await import("./app-user-connections.server");
     const { connectionAPIKey, connectorId } = await exchangeAppUserOAuthCode(
       GATEWAY_BASE_URL,
       data.code,
     );
-    if (connectorId !== GITHUB_CONNECTOR) throw new Error("The connection returned the wrong service.");
+    if (connectorId !== GITHUB_CONNECTOR)
+      throw new Error("The connection returned the wrong service.");
     const res = await callAsAppUser({
       gatewayBaseUrl: GATEWAY_BASE_URL,
       connectionAPIKey,
@@ -59,7 +56,7 @@ export const completeGithubConnect = createServerFn({ method: "POST" })
       path: "/user",
       init: { headers: { Accept: "application/vnd.github+json" } },
     });
-    const login = res.ok ? ((await res.json()) as { login?: string }).login ?? null : null;
+    const login = res.ok ? (((await res.json()) as { login?: string }).login ?? null) : null;
     await saveGithubConnection(context.userId, connectionAPIKey, login);
     return { ok: true, login };
   });
@@ -67,12 +64,10 @@ export const completeGithubConnect = createServerFn({ method: "POST" })
 export const getGithubAccount = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<GithubAccount> => {
-    const { getGithubConnection, GATEWAY_BASE_URL, GITHUB_CONNECTOR, GITHUB_SCOPES } = await import(
-      "./app-user-connections.server"
-    );
-    const { callAsAppUser, appUserReconnectRequired } = await import(
-      "@/integrations/lovable/appUserConnector"
-    );
+    const { getGithubConnection, GATEWAY_BASE_URL, GITHUB_CONNECTOR, GITHUB_SCOPES } =
+      await import("./app-user-connections.server");
+    const { callAsAppUser, appUserReconnectRequired } =
+      await import("@/integrations/lovable/appUserConnector");
     const connection = await getGithubConnection(context.userId);
     if (!connection) return { connected: false };
     const res = await callAsAppUser({
