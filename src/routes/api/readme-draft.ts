@@ -102,62 +102,59 @@ export const Route = createFileRoute("/api/readme-draft")({
 
         const decoder = new TextDecoder();
         const encoder = new TextEncoder();
-        const reader = upstream.body.getReader();
         let buffer = "";
         let wroteText = false;
 
-        const stream = new ReadableStream<Uint8Array>({
-          async start(controller) {
-            for (;;) {
-              const { done, value } = await reader.read();
-              if (done) {
-                if (!wroteText)
-                  controller.enqueue(
-                    encoder.encode("\n[[error]]The model returned an empty draft."),
-                  );
-                controller.close();
-                return;
-              }
-              buffer += decoder.decode(value, { stream: true });
+        const handleLine = (
+          line: string,
+          controller: TransformStreamDefaultController<Uint8Array>,
+        ) => {
+          if (!line.startsWith("data:")) return;
+          const payload = line.slice(5).trim();
+          if (!payload || payload === "[DONE]") return;
+          try {
+            const event = JSON.parse(payload) as {
+              type?: string;
+              delta?: string;
+              error?: { message?: string };
+              response?: { error?: { message?: string } };
+            };
+            if (event.type === "response.output_text.delta" && event.delta) {
+              wroteText = true;
+              controller.enqueue(encoder.encode(event.delta));
+            } else if (event.type === "error" || event.type === "response.failed") {
+              const message =
+                event.error?.message ??
+                event.response?.error?.message ??
+                "The draft could not be completed.";
+              wroteText = true;
+              controller.enqueue(encoder.encode(`\n[[error]]${message}`));
+            }
+          } catch {
+            // ignore partial or non-JSON lines
+          }
+        };
+
+        const stream = upstream.body.pipeThrough(
+          new TransformStream<Uint8Array, Uint8Array>({
+            transform(chunk, controller) {
+              buffer += decoder.decode(chunk, { stream: true });
               const lines = buffer.split("\n");
               buffer = lines.pop() ?? "";
-              for (const line of lines) {
-                if (!line.startsWith("data:")) continue;
-                const payload = line.slice(5).trim();
-                if (!payload || payload === "[DONE]") continue;
-                try {
-                  const event = JSON.parse(payload) as {
-                    type?: string;
-                    delta?: string;
-                    error?: { message?: string };
-                    response?: { error?: { message?: string } };
-                  };
-                  if (event.type === "response.output_text.delta" && event.delta) {
-                    wroteText = true;
-                    controller.enqueue(encoder.encode(event.delta));
-                  } else if (event.type === "error" || event.type === "response.failed") {
-                    const message =
-                      event.error?.message ??
-                      event.response?.error?.message ??
-                      "The draft could not be completed.";
-                    wroteText = true;
-                    controller.enqueue(encoder.encode(`\n[[error]]${message}`));
-                  }
-                } catch {
-                  // ignore partial or non-JSON lines
-                }
-              }
-            }
-          },
-          cancel() {
-            void reader.cancel();
-          },
-        });
+              for (const line of lines) handleLine(line, controller);
+            },
+            flush(controller) {
+              if (buffer) handleLine(buffer, controller);
+              if (!wroteText)
+                controller.enqueue(encoder.encode("\n[[error]]The model returned an empty draft."));
+            },
+          }),
+        );
 
         const responseHeaders = new Headers({ "Content-Type": "text/plain; charset=utf-8" });
         const runId = upstream.headers.get(RUN_ID_HEADER);
         if (runId) responseHeaders.set(RUN_ID_HEADER, runId);
-        return new Response(upstream.body, { headers: responseHeaders }); void stream;
+        return new Response(stream, { headers: responseHeaders });
       },
     },
   },
