@@ -63,17 +63,30 @@ export function ReadmeStudio() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-5 py-12 lg:px-10 lg:py-16">
-      <header className="max-w-3xl">
-        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1.5 font-mono text-[10px] uppercase text-muted-foreground">
-          <span className="size-1.5 rounded-full bg-success" /> Private drafting workspace
+      <header className="max-w-4xl">
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-[10px] uppercase text-primary">
+          <span className="size-1.5 animate-pulse rounded-full bg-primary" /> AI-powered
+          documentation
         </div>
-        <h1 className="font-display text-5xl font-semibold leading-none text-balance sm:text-6xl">
-          Turn repository context into a README people can use.
+        <h1 className="font-display text-5xl font-semibold leading-[1.06] text-balance sm:text-6xl lg:text-7xl">
+          Ship better documentation with AI-powered{" "}
+          <span className="relative inline-block text-primary">
+            <span className="relative z-10">GitHub documentation</span>
+            <span
+              className="absolute inset-x-0 bottom-1 h-2 bg-primary/15"
+              aria-hidden="true"
+            />
+          </span>
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Provide the facts you trust. The studio returns clear Markdown, preserves existing
-          technical details, and marks anything missing instead of inventing it.
+          Automatically transform deep repository context into polished, professional
+          documentation that developers actually use.
         </p>
+        <div className="mt-6 flex items-center gap-3 font-mono text-[10px] uppercase text-muted-foreground">
+          <span className="h-px w-10 bg-border" aria-hidden="true" />
+          Generated via repo.io
+          <span className="h-px w-10 bg-border" aria-hidden="true" />
+        </div>
       </header>
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)]">
