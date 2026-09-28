@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadmeStudioRouteImport } from './routes/readme-studio'
 import { Route as ApiCodeReportRouteImport } from './routes/api/code-report'
+import { Route as ApiGithubPublishRouteImport } from './routes/api/github-publish'
 import { Route as ApiReadmeDraftRouteImport } from './routes/api/readme-draft'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const ApiCodeReportRoute = ApiCodeReportRouteImport.update({
   path: '/api/code-report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGithubPublishRoute = ApiGithubPublishRouteImport.update({
+  id: '/api/github-publish',
+  path: '/api/github-publish',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiReadmeDraftRoute = ApiReadmeDraftRouteImport.update({
   id: '/api/readme-draft',
   path: '/api/readme-draft',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/readme-studio': typeof ReadmeStudioRoute
   '/api/code-report': typeof ApiCodeReportRoute
+  '/api/github-publish': typeof ApiGithubPublishRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/readme-studio': typeof ReadmeStudioRoute
   '/api/code-report': typeof ApiCodeReportRoute
+  '/api/github-publish': typeof ApiGithubPublishRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesById {
@@ -52,18 +60,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/readme-studio': typeof ReadmeStudioRoute
   '/api/code-report': typeof ApiCodeReportRoute
+  '/api/github-publish': typeof ApiGithubPublishRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/readme-studio' | '/api/code-report' | '/api/readme-draft'
+  fullPaths:
+    | '/'
+    | '/readme-studio'
+    | '/api/code-report'
+    | '/api/github-publish'
+    | '/api/readme-draft'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/readme-studio' | '/api/code-report' | '/api/readme-draft'
+  to:
+    | '/'
+    | '/readme-studio'
+    | '/api/code-report'
+    | '/api/github-publish'
+    | '/api/readme-draft'
   id:
     | '__root__'
     | '/'
     | '/readme-studio'
     | '/api/code-report'
+    | '/api/github-publish'
     | '/api/readme-draft'
   fileRoutesById: FileRoutesById
 }
@@ -71,6 +91,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ReadmeStudioRoute: typeof ReadmeStudioRoute
   ApiCodeReportRoute: typeof ApiCodeReportRoute
+  ApiGithubPublishRoute: typeof ApiGithubPublishRoute
   ApiReadmeDraftRoute: typeof ApiReadmeDraftRoute
 }
 
@@ -97,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCodeReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/github-publish': {
+      id: '/api/github-publish'
+      path: '/api/github-publish'
+      fullPath: '/api/github-publish'
+      preLoaderRoute: typeof ApiGithubPublishRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/readme-draft': {
       id: '/api/readme-draft'
       path: '/api/readme-draft'
@@ -111,6 +139,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ReadmeStudioRoute: ReadmeStudioRoute,
   ApiCodeReportRoute: ApiCodeReportRoute,
+  ApiGithubPublishRoute: ApiGithubPublishRoute,
   ApiReadmeDraftRoute: ApiReadmeDraftRoute,
 }
 export const routeTree = rootRouteImport
