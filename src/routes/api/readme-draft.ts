@@ -65,7 +65,7 @@ export const Route = createFileRoute("/api/readme-draft")({
         try {
           upstream = await fetch(GATEWAY_URL, {
             method: "POST",
-            signal: request.signal,
+            signal: request.signal.aborted ? undefined : undefined,
             headers,
             body: JSON.stringify({
               model: MODEL,
