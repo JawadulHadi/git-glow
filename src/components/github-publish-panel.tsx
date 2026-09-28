@@ -80,14 +80,8 @@ export function GithubPublishPanel({ accessCode, owner, repo, readme, files = []
   });
 
   const wikiSource = readme ?? files[0]?.content;
-  const wikiFile = wikiSource
-    ? [{ path: "docs/WIKI.md", content: wikiSource }]
-    : [];
-  const allFiles = [
-    ...files,
-    ...(includeWiki ? wikiFile : []),
-    ...(includeAppDocs ? appDocs : []),
-  ];
+  const wikiFile = wikiSource ? [{ path: "docs/WIKI.md", content: wikiSource }] : [];
+  const allFiles = [...files, ...(includeWiki ? wikiFile : []), ...(includeAppDocs ? appDocs : [])];
 
   function handlePublish() {
     mutation.mutate({

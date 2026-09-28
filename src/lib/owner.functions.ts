@@ -76,7 +76,15 @@ export const getOwnerOverview = createServerFn({ method: "GET" })
     const days: UsageDay[] = [];
     for (let i = 0; i < 14; i += 1) {
       const d = new Date(since.getTime() + i * 86400000);
-      days.push({ day: d.toISOString().slice(0, 10), opens: 0, visitors: 0, readme: 0, report: 0, publish: 0, failed: 0 });
+      days.push({
+        day: d.toISOString().slice(0, 10),
+        opens: 0,
+        visitors: 0,
+        readme: 0,
+        report: 0,
+        publish: 0,
+        failed: 0,
+      });
     }
     const visitorHashes = new Set<string>();
     for (const visit of visitRows) {
