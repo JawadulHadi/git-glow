@@ -295,8 +295,8 @@ async function collectPypi(name: string): Promise<SourceFacts> {
 
 export async function collectFacts(input: {
   repo: RepoRef | null;
-  npmPackage?: string;
-  pypiPackage?: string;
+  npmPackage?: string | undefined;
+  pypiPackage?: string | undefined;
 }): Promise<SourceFacts[]> {
   const jobs: Promise<SourceFacts>[] = [];
   const { repo, npmPackage, pypiPackage } = input;
