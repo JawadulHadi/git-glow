@@ -8,14 +8,15 @@ const MODEL = "openai/gpt-6-astra";
 
 const requestSchema = z.object({
   accessCode: z.string().min(1),
+  githubOwner: z.string().trim().min(1).max(80),
   repositoryName: z.string().trim().min(1).max(120),
   description: z.string().trim().min(1).max(4000),
   existingReadme: z.string().max(40000).default(""),
 });
 
-const brandBrief = `You write GitHub README files for Jawad Ul Hadi, a backend lead engineer (portfolio: https://juh-bukhari.vercel.app, GitHub: https://github.com/JawadulHadi).
-Brand voice: friendly, professional, precise, outcome-focused. Sentence case headings. No emojis walls, no hype.
-Structure: a title with a one-line value statement, a short overview, key features, architecture or how it works (a mermaid diagram only if the input supports it), tech stack, getting started (only commands present in or clearly implied by the input), usage, project status, and a brief footer: "Built by Jawad Ul Hadi" linking to the portfolio.
+const brandBrief = `You write polished GitHub README files for software repositories.
+Brand voice: friendly, professional, precise, outcome-focused. Use sentence case headings, restrained formatting, and no hype.
+Structure: a title with a one-line value statement, a short overview, key features, architecture or how it works (a Mermaid diagram only if the input supports it), tech stack, getting started (only commands present in or clearly implied by the input), usage, and project status.
 Strict rules: never invent metrics, users, benchmarks, badges for services not mentioned, licences, or commands. Preserve accurate technical facts from the existing README. Where information is missing, leave a short HTML comment such as <!-- Add setup steps --> instead of fabricating.
 Return only the README markdown, with no surrounding code fence.`;
 
@@ -51,7 +52,7 @@ export const Route = createFileRoute("/api/readme-draft")({
           return jsonError(401, "That owner access code is not correct.");
         }
 
-        const userPrompt = `Repository: ${input.repositoryName}\n\nDescription:\n${input.description}\n\nExisting README:\n${input.existingReadme || "(none provided)"}`;
+        const userPrompt = `GitHub owner: ${input.githubOwner}\nRepository: ${input.repositoryName}\n\nDescription:\n${input.description}\n\nExisting README:\n${input.existingReadme || "(none provided)"}`;
 
         const headers = new Headers({
           "Content-Type": "application/json",

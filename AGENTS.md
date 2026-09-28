@@ -13,6 +13,6 @@
 
 ## Project architecture
 
-- Use separate TanStack routes for portfolio sections so each page has independent metadata and shareable URLs.
-- Keep verified GitHub activity distinct from curated project milestones so editorial context is never presented as contribution data.
-- Fetch public GitHub data through a server function and React Query service layer to keep components focused and failures transparent.
+- Keep README generation behind the existing owner access code because AI usage must not be publicly consumable.
+- Require the GitHub owner as user input because publishing must never target a hardcoded personal account.
+- Keep generated content identity-neutral because the studio is a reusable product, not a personal portfolio.
