@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { Check, Copy, Github, Loader2, Sparkles, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useStudioVisit } from "@/hooks/use-studio-visit";
 import { GithubPublishPanel } from "@/components/github-publish-panel";
 import { buildGithubPublishUrl, streamReadmeDraft } from "@/lib/readme-draft";
 
@@ -8,6 +9,7 @@ const fieldClass =
   "w-full rounded-md border border-border bg-background/70 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
 
 export function ReadmeStudio() {
+  useStudioVisit("readme");
   const [accessCode, setAccessCode] = useState("");
   const [githubOwner, setGithubOwner] = useState("alex-morgan-demo");
   const [repositoryName, setRepositoryName] = useState("signal-cache");

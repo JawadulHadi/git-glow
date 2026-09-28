@@ -4,6 +4,7 @@ import { Check, Copy, Download, Loader2, ScanSearch, Square } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { GithubPublishPanel } from "@/components/github-publish-panel";
 import { GithubAccount } from "@/components/github-account";
+import { useStudioVisit } from "@/hooks/use-studio-visit";
 import { streamCodeReport } from "@/lib/code-report";
 import { parseRepoUrl } from "@/lib/sources";
 
@@ -34,6 +35,7 @@ const fieldClass =
   "w-full rounded-md border border-border bg-background/70 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
 
 function CodeReportPage() {
+  useStudioVisit("code-report");
   const [accessCode, setAccessCode] = useState("");
   const [repositoryUrl, setRepositoryUrl] = useState(
     "https://github.com/alex-morgan-demo/signal-cache",

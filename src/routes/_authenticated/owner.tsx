@@ -201,6 +201,9 @@ function OwnerPanel() {
 
           <section className="grid gap-3 sm:grid-cols-4">
             {[
+              ["Studio opens", data.visits.opens],
+              ["Unique visitors", data.visits.visitors],
+              ["Report conversion", `${data.visits.reportConversion.toLocaleString("de-DE")} %`],
               ["README drafts", data.totals.readme],
               ["Code reports", data.totals.report],
               ["Publishes", data.totals.publish],
@@ -221,6 +224,8 @@ function OwnerPanel() {
                 <thead className="text-left text-xs text-muted-foreground">
                   <tr>
                     <th className="py-1.5">Date</th>
+                    <th>Opens</th>
+                    <th>Visitors</th>
                     <th>README</th>
                     <th>Report</th>
                     <th>Publish</th>
@@ -231,6 +236,8 @@ function OwnerPanel() {
                   {[...data.days].reverse().map((d) => (
                     <tr key={d.day} className="border-t border-border/60">
                       <td className="py-1.5 font-mono text-xs">{formatDay(d.day)}</td>
+                      <td>{d.opens}</td>
+                      <td>{d.visitors}</td>
                       <td>{d.readme}</td>
                       <td>{d.report}</td>
                       <td>{d.publish}</td>

@@ -13,9 +13,11 @@
 - [x] Code report: verified facts from GitHub, GitLab, Bitbucket, npm, PyPI plus labelled AI interpretation
 - [x] Publish to GitHub: README, brand SVGs, docs, description, topics, tag and Release, with re-read checklist
 - [x] Neutral SVG logo and banner; studio documentation in docs/
-- [ ] Live publish test on a real repository (waiting for the user to name a target repo)
+- [ ] Live publish test on repo-radiance-forge.git (waiting for Google sign-in and GitHub authorization in the preview)
 - [x] Visitor GitHub sign-in: reports read real repos, publish writes to the visitor's repo and opens it
 - [x] Add Google sign-in for studio accounts
+- [x] Add privacy-conscious visitor tracking and owner usage metrics
+- [x] Publish a wiki-ready document alongside repository documentation
 - [ ] End-to-end owner code, reset, live report and publish test (waiting for the user to sign in and connect GitHub in the preview)
 - [x] Owner panel: email sign-in, set/reset access code, usage stats
 - [x] Rename the app to repo.io
