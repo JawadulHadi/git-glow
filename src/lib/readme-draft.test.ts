@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { splitDraftError } from "./readme-draft";
+import { buildGithubPublishUrl, splitDraftError, withBrandHeader } from "./readme-draft";
 
 describe("splitDraftError", () => {
   it("returns the full draft when no error is present", () => {
@@ -11,5 +11,21 @@ describe("splitDraftError", () => {
       draft: "# Title",
       error: "Failed",
     });
+  });
+});
+
+describe("publishing helpers", () => {
+  it("adds the brand banner and mark", () => {
+    const result = withBrandHeader("# Title");
+    expect(result).toContain("/brand/banner.png");
+    expect(result).toContain("/brand/logo-mark.png");
+    expect(result.endsWith("# Title\n")).toBe(true);
+  });
+
+  it("pre-fills short READMEs and falls back for long ones", () => {
+    expect(buildGithubPublishUrl("qeloma-ocr", "# Hi").prefilled).toBe(true);
+    const long = buildGithubPublishUrl("qeloma-ocr", "x".repeat(8000));
+    expect(long.prefilled).toBe(false);
+    expect(long.url).toBe("https://github.com/JawadulHadi/qeloma-ocr/edit/main/README.md");
   });
 });
