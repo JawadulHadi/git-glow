@@ -8,3 +8,4 @@
 - [x] Complete browser and code-quality verification.
 - [x] README studio: owner-only AI README drafting page
 - [x] Brand kit ZIP: logo, portrait mark, banner in repo-ready sizes/formats
+- [ ] Remove all personal and Qeloma references and relaunch as a fictional README Studio
