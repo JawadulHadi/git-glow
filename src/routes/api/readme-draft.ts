@@ -157,7 +157,7 @@ export const Route = createFileRoute("/api/readme-draft")({
         const responseHeaders = new Headers({ "Content-Type": "text/plain; charset=utf-8" });
         const runId = upstream.headers.get(RUN_ID_HEADER);
         if (runId) responseHeaders.set(RUN_ID_HEADER, runId);
-        return new Response(stream, { headers: responseHeaders });
+        return new Response(upstream.body, { headers: responseHeaders }); void stream;
       },
     },
   },
