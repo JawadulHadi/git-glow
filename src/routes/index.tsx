@@ -13,7 +13,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "README Studio · Repository documentation" },
       {
         property: "og:description",
-        content: "Draft clear GitHub documentation from facts you provide, without invented details.",
+        content:
+          "Draft clear GitHub documentation from facts you provide, without invented details.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

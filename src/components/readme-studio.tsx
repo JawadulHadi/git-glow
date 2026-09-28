@@ -136,7 +136,9 @@ export function ReadmeStudio() {
 
           <label className="block space-y-2">
             <span className="text-sm font-medium">Existing README</span>
-            <span className="block text-xs text-muted-foreground">Optional — paste Markdown only.</span>
+            <span className="block text-xs text-muted-foreground">
+              Optional — paste Markdown only.
+            </span>
             <textarea
               rows={9}
               value={existingReadme}
@@ -152,7 +154,11 @@ export function ReadmeStudio() {
               {isDrafting ? "Drafting…" : "Draft README"}
             </Button>
             {isDrafting ? (
-              <Button type="button" variant="outline" onClick={() => controllerRef.current?.abort()}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => controllerRef.current?.abort()}
+              >
                 <Square /> Stop
               </Button>
             ) : null}
@@ -164,7 +170,10 @@ export function ReadmeStudio() {
           ) : null}
         </form>
 
-        <section className="glass-panel flex min-h-[42rem] flex-col p-5 sm:p-6" aria-label="Draft README">
+        <section
+          className="glass-panel flex min-h-[42rem] flex-col p-5 sm:p-6"
+          aria-label="Draft README"
+        >
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
             <div>
               <p className="font-mono text-[10px] uppercase text-primary">Output</p>
@@ -181,7 +190,12 @@ export function ReadmeStudio() {
                 {copied ? <Check /> : <Copy />}
                 {copied ? "Copied" : "Copy"}
               </Button>
-              <Button type="button" size="sm" disabled={!draft || isDrafting} onClick={handlePublish}>
+              <Button
+                type="button"
+                size="sm"
+                disabled={!draft || isDrafting}
+                onClick={handlePublish}
+              >
                 <Github /> Publish to GitHub
               </Button>
             </div>

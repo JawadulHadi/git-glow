@@ -10,36 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CaseStudyRouteImport } from './routes/case-study'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CredentialsRouteImport } from './routes/credentials'
-import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReadmeStudioRouteImport } from './routes/readme-studio'
 import { Route as ApiReadmeDraftRouteImport } from './routes/api/readme-draft'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaseStudyRoute = CaseStudyRouteImport.update({
-  id: '/case-study',
-  path: '/case-study',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CredentialsRoute = CredentialsRouteImport.update({
-  id: '/credentials',
-  path: '/credentials',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReadmeStudioRoute = ReadmeStudioRouteImport.update({
@@ -55,68 +31,30 @@ const ApiReadmeDraftRoute = ApiReadmeDraftRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/case-study': typeof CaseStudyRoute
-  '/contact': typeof ContactRoute
-  '/credentials': typeof CredentialsRoute
-  '/projects': typeof ProjectsRoute
   '/readme-studio': typeof ReadmeStudioRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/case-study': typeof CaseStudyRoute
-  '/contact': typeof ContactRoute
-  '/credentials': typeof CredentialsRoute
-  '/projects': typeof ProjectsRoute
   '/readme-studio': typeof ReadmeStudioRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/case-study': typeof CaseStudyRoute
-  '/contact': typeof ContactRoute
-  '/credentials': typeof CredentialsRoute
-  '/projects': typeof ProjectsRoute
   '/readme-studio': typeof ReadmeStudioRoute
   '/api/readme-draft': typeof ApiReadmeDraftRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/case-study'
-    | '/contact'
-    | '/credentials'
-    | '/projects'
-    | '/readme-studio'
-    | '/api/readme-draft'
+  fullPaths: '/' | '/readme-studio' | '/api/readme-draft'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/case-study'
-    | '/contact'
-    | '/credentials'
-    | '/projects'
-    | '/readme-studio'
-    | '/api/readme-draft'
-  id:
-    | '__root__'
-    | '/'
-    | '/case-study'
-    | '/contact'
-    | '/credentials'
-    | '/projects'
-    | '/readme-studio'
-    | '/api/readme-draft'
+  to: '/' | '/readme-studio' | '/api/readme-draft'
+  id: '__root__' | '/' | '/readme-studio' | '/api/readme-draft'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CaseStudyRoute: typeof CaseStudyRoute
-  ContactRoute: typeof ContactRoute
-  CredentialsRoute: typeof CredentialsRoute
-  ProjectsRoute: typeof ProjectsRoute
   ReadmeStudioRoute: typeof ReadmeStudioRoute
   ApiReadmeDraftRoute: typeof ApiReadmeDraftRoute
 }
@@ -128,34 +66,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/case-study': {
-      id: '/case-study'
-      path: '/case-study'
-      fullPath: '/case-study'
-      preLoaderRoute: typeof CaseStudyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/credentials': {
-      id: '/credentials'
-      path: '/credentials'
-      fullPath: '/credentials'
-      preLoaderRoute: typeof CredentialsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/readme-studio': {
@@ -177,10 +87,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CaseStudyRoute: CaseStudyRoute,
-  ContactRoute: ContactRoute,
-  CredentialsRoute: CredentialsRoute,
-  ProjectsRoute: ProjectsRoute,
   ReadmeStudioRoute: ReadmeStudioRoute,
   ApiReadmeDraftRoute: ApiReadmeDraftRoute,
 }

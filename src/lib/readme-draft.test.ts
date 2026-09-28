@@ -16,13 +16,9 @@ describe("splitDraftError", () => {
 
 describe("publishing helpers", () => {
   it("pre-fills short READMEs and falls back for long ones", () => {
-    expect(buildGithubPublishUrl("alex-morgan-demo", "signal-cache", "# Hi").prefilled).toBe(
-      true,
-    );
+    expect(buildGithubPublishUrl("alex-morgan-demo", "signal-cache", "# Hi").prefilled).toBe(true);
     const long = buildGithubPublishUrl("alex-morgan-demo", "signal-cache", "x".repeat(8000));
     expect(long.prefilled).toBe(false);
-    expect(long.url).toBe(
-      "https://github.com/alex-morgan-demo/signal-cache/edit/main/README.md",
-    );
+    expect(long.url).toBe("https://github.com/alex-morgan-demo/signal-cache/edit/main/README.md");
   });
 });

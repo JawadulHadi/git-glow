@@ -7,7 +7,8 @@ export const Route = createFileRoute("/readme-studio")({
       { title: "README Studio · Professional repository documentation" },
       {
         name: "description",
-        content: "Private tool for drafting accurate, professionally structured repository READMEs.",
+        content:
+          "Private tool for drafting accurate, professionally structured repository READMEs.",
       },
       { property: "og:title", content: "README Studio · Repository documentation" },
       { property: "og:description", content: "Draft polished, on-brand repository READMEs." },
