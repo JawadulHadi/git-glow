@@ -92,7 +92,7 @@ Charts are generated from real public GitHub data. Nothing is backfilled.
 
 **Education** — B.S. Computer Science, Government College University, Faisalabad, 2018
 
-**Certifications** — 53 verified certifications across Anthropic, IBM, Microsoft, Google and LinkedIn Learning. Each links to the issuer's verification page: [CERTIFICATIONS.md](./CERTIFICATIONS.md)
+**Certifications** — Verified certifications across Anthropic, IBM, Microsoft, Google and LinkedIn Learning. Each links to the issuer's verification page: [CERTIFICATIONS.md](./CERTIFICATIONS.md)
 
 ## 04 · Services & contact
 
