@@ -85,8 +85,10 @@ export const Route = createFileRoute("/api/readme-draft")({
         if (!upstream.ok || !upstream.body) {
           const body = await upstream.text();
           let message = `The writing service returned an error (${upstream.status}).`;
-          if (upstream.status === 402) message = "AI credits have run out. Add credits in Settings → Plans & credits.";
-          else if (upstream.status === 429) message = "Too many requests right now. Please wait a moment and try again.";
+          if (upstream.status === 402)
+            message = "AI credits have run out. Add credits in Settings → Plans & credits.";
+          else if (upstream.status === 429)
+            message = "Too many requests right now. Please wait a moment and try again.";
           else {
             try {
               const detail = JSON.parse(body) as { error?: { message?: string }; message?: string };
@@ -105,37 +107,45 @@ export const Route = createFileRoute("/api/readme-draft")({
         let wroteText = false;
 
         const stream = new ReadableStream<Uint8Array>({
-          async pull(controller) {
-            const { done, value } = await reader.read();
-            if (done) {
-              if (!wroteText) controller.enqueue(encoder.encode("\n[[error]]The model returned an empty draft."));
-              controller.close();
-              return;
-            }
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split("\n");
-            buffer = lines.pop() ?? "";
-            for (const line of lines) {
-              if (!line.startsWith("data:")) continue;
-              const payload = line.slice(5).trim();
-              if (!payload || payload === "[DONE]") continue;
-              try {
-                const event = JSON.parse(payload) as {
-                  type?: string;
-                  delta?: string;
-                  error?: { message?: string };
-                  response?: { error?: { message?: string } };
-                };
-                if (event.type === "response.output_text.delta" && event.delta) {
-                  wroteText = true;
-                  controller.enqueue(encoder.encode(event.delta));
-                } else if (event.type === "error" || event.type === "response.failed") {
-                  const message = event.error?.message ?? event.response?.error?.message ?? "The draft could not be completed.";
-                  wroteText = true;
-                  controller.enqueue(encoder.encode(`\n[[error]]${message}`));
+          async start(controller) {
+            for (;;) {
+              const { done, value } = await reader.read();
+              if (done) {
+                if (!wroteText)
+                  controller.enqueue(
+                    encoder.encode("\n[[error]]The model returned an empty draft."),
+                  );
+                controller.close();
+                return;
+              }
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split("\n");
+              buffer = lines.pop() ?? "";
+              for (const line of lines) {
+                if (!line.startsWith("data:")) continue;
+                const payload = line.slice(5).trim();
+                if (!payload || payload === "[DONE]") continue;
+                try {
+                  const event = JSON.parse(payload) as {
+                    type?: string;
+                    delta?: string;
+                    error?: { message?: string };
+                    response?: { error?: { message?: string } };
+                  };
+                  if (event.type === "response.output_text.delta" && event.delta) {
+                    wroteText = true;
+                    controller.enqueue(encoder.encode(event.delta));
+                  } else if (event.type === "error" || event.type === "response.failed") {
+                    const message =
+                      event.error?.message ??
+                      event.response?.error?.message ??
+                      "The draft could not be completed.";
+                    wroteText = true;
+                    controller.enqueue(encoder.encode(`\n[[error]]${message}`));
+                  }
+                } catch {
+                  // ignore partial or non-JSON lines
                 }
-              } catch {
-                // ignore partial or non-JSON lines
               }
             }
           },

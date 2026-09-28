@@ -11,7 +11,10 @@ const ERROR_MARKER = "[[error]]";
 export function splitDraftError(text: string): { draft: string; error: string | null } {
   const index = text.indexOf(ERROR_MARKER);
   if (index === -1) return { draft: text, error: null };
-  return { draft: text.slice(0, index).trimEnd(), error: text.slice(index + ERROR_MARKER.length).trim() };
+  return {
+    draft: text.slice(0, index).trimEnd(),
+    error: text.slice(index + ERROR_MARKER.length).trim(),
+  };
 }
 
 /** Streams a README draft from the server, calling onText with the accumulated text. */

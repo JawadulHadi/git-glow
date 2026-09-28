@@ -7,6 +7,9 @@ describe("splitDraftError", () => {
   });
 
   it("separates an in-stream error from the draft", () => {
-    expect(splitDraftError("# Title\n[[error]]Failed")).toEqual({ draft: "# Title", error: "Failed" });
+    expect(splitDraftError("# Title\n[[error]]Failed")).toEqual({
+      draft: "# Title",
+      error: "Failed",
+    });
   });
 });
