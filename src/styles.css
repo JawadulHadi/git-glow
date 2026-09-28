@@ -19,6 +19,9 @@
  */
 
 @theme inline {
+  --font-sans: "Geist", sans-serif;
+  --font-display: "Geist", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -59,29 +62,37 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-surface: var(--surface);
+  --color-success: var(--success);
+  --color-activity-0: var(--activity-0);
+  --color-activity-1: var(--activity-1);
+  --color-activity-2: var(--activity-2);
+  --color-activity-3: var(--activity-3);
+  --color-activity-4: var(--activity-4);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  color-scheme: dark;
+  --radius: 0.5rem;
+  --background: oklch(0.14 0.024 258);
+  --foreground: oklch(0.95 0.012 247);
+  --card: oklch(0.19 0.029 258 / 72%);
+  --card-foreground: oklch(0.95 0.012 247);
+  --popover: oklch(0.18 0.029 258);
+  --popover-foreground: oklch(0.95 0.012 247);
+  --primary: oklch(0.72 0.15 240);
+  --primary-foreground: oklch(0.14 0.024 258);
+  --secondary: oklch(0.23 0.028 256);
+  --secondary-foreground: oklch(0.95 0.012 247);
+  --muted: oklch(0.23 0.028 256);
+  --muted-foreground: oklch(0.69 0.037 251);
+  --accent: oklch(0.67 0.12 220);
+  --accent-foreground: oklch(0.13 0.024 258);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.33 0.031 256 / 70%);
+  --input: oklch(0.3 0.031 256);
+  --ring: oklch(0.72 0.15 240);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -95,6 +106,13 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --surface: oklch(0.17 0.027 258 / 72%);
+  --success: oklch(0.76 0.14 163);
+  --activity-0: oklch(0.22 0.028 256);
+  --activity-1: oklch(0.35 0.09 239);
+  --activity-2: oklch(0.49 0.13 239);
+  --activity-3: oklch(0.62 0.15 239);
+  --activity-4: oklch(0.74 0.16 230);
 }
 
 .dark {
@@ -140,5 +158,78 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    min-width: 320px;
+  }
+
+  a, button {
+    outline-offset: 4px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+  }
+}
+
+@utility glass-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--color-card) 82%, transparent);
+  backdrop-filter: blur(22px) saturate(120%);
+  box-shadow: 0 20px 60px oklch(0.06 0.02 258 / 28%);
+}
+
+@utility button-sweep {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 25%, oklch(1 0 0 / 10%) 50%, transparent 75%);
+    transform: translateX(-130%);
+    transition: transform 420ms ease;
+  }
+
+  &:hover::after {
+    transform: translateX(130%);
+  }
+}
+
+.site-grid {
+  background-image:
+    linear-gradient(to right, oklch(0.72 0.15 240 / 4%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.72 0.15 240 / 4%) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.ambient-wash {
+  background:
+    linear-gradient(125deg, oklch(0.32 0.1 242 / 22%) 0%, transparent 32%),
+    linear-gradient(315deg, oklch(0.31 0.08 181 / 12%) 0%, transparent 24%);
+}
+
+.architecture-line {
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+  transform-origin: left;
+  animation: line-reveal 1.2s ease both;
+}
+
+@keyframes line-reveal {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
