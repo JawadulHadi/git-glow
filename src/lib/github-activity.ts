@@ -24,6 +24,7 @@ export type PublicActivity = {
   repositories: GithubRepository[];
   eventCount: number;
   fetchedAt: string;
+  unavailable?: boolean;
 };
 
 const toDay = (value: string) => value.slice(0, 10);

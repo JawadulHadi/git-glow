@@ -15,6 +15,9 @@ const requestGithub = async (path: string): Promise<unknown[]> => {
       Accept: "application/vnd.github+json",
       "User-Agent": "Jawad-Ul-Hadi-Portfolio",
       "X-GitHub-Api-Version": "2022-11-28",
+      ...(process.env["GITHUB_TOKEN"]
+        ? { Authorization: `Bearer ${process.env["GITHUB_TOKEN"]}` }
+        : {}),
     },
   });
 
@@ -26,8 +29,32 @@ const requestGithub = async (path: string): Promise<unknown[]> => {
   return githubResponseSchema.parse(await response.json());
 };
 
+const cacheTtlMs = 10 * 60 * 1000;
+let cached: { value: PublicActivity; at: number } | undefined;
+
 export const getPublicGithubActivity = createServerFn({ method: "GET" }).handler(
   async (): Promise<PublicActivity> => {
+    if (cached && Date.now() - cached.at < cacheTtlMs) return cached.value;
+    try {
+      const value = await loadActivity();
+      cached = { value, at: Date.now() };
+      return value;
+    } catch (error) {
+      console.error(error);
+      if (cached) return cached.value;
+      return {
+        days: buildActivityDays([]),
+        repositories: [],
+        eventCount: 0,
+        fetchedAt: new Date().toISOString(),
+        unavailable: true,
+      };
+    }
+  },
+);
+
+const loadActivity = async (): Promise<PublicActivity> => {
+  {
     const [eventData, repositoryData] = await Promise.all([
       requestGithub("/users/JawadulHadi/events/public?per_page=100"),
       requestGithub("/orgs/Qeloma/repos?per_page=100&sort=pushed"),
@@ -50,5 +77,5 @@ export const getPublicGithubActivity = createServerFn({ method: "GET" }).handler
       eventCount: events.length,
       fetchedAt: new Date().toISOString(),
     };
-  },
-);
+  }
+};

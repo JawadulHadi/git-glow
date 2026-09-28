@@ -27,7 +27,8 @@ export function ActivityGrid({ compact = false }: { compact?: boolean }) {
           </p>
         </div>
         <span className="inline-flex items-center gap-2 rounded-full border border-success/30 bg-success/10 px-2.5 py-1 font-mono text-[10px] text-success">
-          <span className="size-1.5 rounded-full bg-success" /> Live
+          <span className="size-1.5 rounded-full bg-success" />{" "}
+          {data.unavailable ? "Paused" : "Live"}
         </span>
       </div>
       <div
@@ -46,7 +47,11 @@ export function ActivityGrid({ compact = false }: { compact?: boolean }) {
         })}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] text-muted-foreground">
-        <span>{data.eventCount} recent public events returned by GitHub</span>
+        <span>
+          {data.unavailable
+            ? "GitHub is temporarily limiting requests. View the live chart on GitHub."
+            : `${data.eventCount} recent public events returned by GitHub`}
+        </span>
         <a
           className="inline-flex items-center gap-1 text-primary hover:text-foreground"
           href="https://github.com/JawadulHadi"
