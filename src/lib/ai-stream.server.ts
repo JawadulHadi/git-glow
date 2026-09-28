@@ -15,11 +15,11 @@ export function jsonError(status: number, message: string): Response {
 }
 
 /** Returns an error response when the owner code is missing or wrong, otherwise null. */
-export function checkOwner(accessCode: string): Response | null {
-  const ownerCode = process.env["README_STUDIO_ACCESS_CODE"];
-  if (!ownerCode) return jsonError(500, "The studio is not configured yet.");
-  if (!codesMatch(accessCode, ownerCode))
-    return jsonError(401, "That owner access code is not correct.");
+export async function checkOwner(accessCode: string): Promise<Response | null> {
+  const { accessCodeValid } = await import("./studio-settings.server");
+  const result = await accessCodeValid(accessCode);
+  if (result === "unconfigured") return jsonError(500, "The studio is not configured yet.");
+  if (!result) return jsonError(401, "That owner access code is not correct.");
   return null;
 }
 

@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { recordUsage } from "@/lib/studio-settings.server";
 import { checkOwner, jsonError, streamModelText } from "@/lib/ai-stream.server";
+import { getRequestUserId } from "@/lib/request-user.server";
+import { getGithubConnection } from "@/lib/app-user-connections.server";
 import { collectFacts } from "@/lib/collect.server";
 import { formatFacts, parseRepoUrl } from "@/lib/sources";
 
@@ -33,7 +36,7 @@ export const Route = createFileRoute("/api/code-report")({
         if (!parsed.success)
           return jsonError(400, "Please check the repository link and package names.");
         const input = parsed.data;
-        const denied = checkOwner(input.accessCode);
+        const denied = await checkOwner(input.accessCode);
         if (denied) return denied;
 
         const repo = input.repositoryUrl ? parseRepoUrl(input.repositoryUrl) : null;
@@ -44,7 +47,10 @@ export const Route = createFileRoute("/api/code-report")({
           return jsonError(400, "Add a repository link, a package name or a code excerpt.");
         }
 
+        const userId = await getRequestUserId(request);
+        const connection = userId ? await getGithubConnection(userId) : null;
         const facts = await collectFacts({
+          githubUserKey: connection?.key,
           repo,
           npmPackage: input.npmPackage || undefined,
           pypiPackage: input.pypiPackage || undefined,
@@ -57,12 +63,14 @@ export const Route = createFileRoute("/api/code-report")({
         const stamp = `${String(today.getUTCDate()).padStart(2, "0")}/${String(today.getUTCMonth() + 1).padStart(2, "0")}/${today.getUTCFullYear()}`;
         const prefix = `# Code report: ${title}\n\n_Generated ${stamp}. Verified facts come from public sources; the interpretation is written by AI._\n\n${facts.length ? factsMarkdown : ""}`;
 
-        return streamModelText({
+        const response = await streamModelText({
           request,
           instructions: reportBrief,
           prefix,
           input: `${facts.length ? factsMarkdown : "No sources were requested."}\n\nCode excerpt:\n${input.code || "(none provided)"}`,
         });
+        await recordUsage("report", response.ok);
+        return response;
       },
     },
   },

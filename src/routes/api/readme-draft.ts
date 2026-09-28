@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { recordUsage } from "@/lib/studio-settings.server";
 import { checkOwner, jsonError, streamModelText } from "@/lib/ai-stream.server";
 
 const requestSchema = z.object({
@@ -25,14 +26,16 @@ export const Route = createFileRoute("/api/readme-draft")({
         if (!parsed.success)
           return jsonError(400, "Please provide a repository name and description.");
         const input = parsed.data;
-        const denied = checkOwner(input.accessCode);
+        const denied = await checkOwner(input.accessCode);
         if (denied) return denied;
 
-        return streamModelText({
+        const response = await streamModelText({
           request,
           instructions: brandBrief,
           input: `GitHub owner: ${input.githubOwner}\nRepository: ${input.repositoryName}\n\nDescription:\n${input.description}\n\nExisting README:\n${input.existingReadme || "(none provided)"}`,
         });
+        await recordUsage("readme", response.ok);
+        return response;
       },
     },
   },
