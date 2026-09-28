@@ -21,9 +21,14 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </span>
             </span>
           </Link>
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/readme-studio">Open studio</Link>
-          </Button>
+          <nav className="flex items-center gap-1" aria-label="Main">
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/">README</Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/code-report">Code report</Link>
+            </Button>
+          </nav>
         </div>
       </header>
       <main className="relative z-10">{children}</main>
