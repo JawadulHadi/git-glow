@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
-import { Loader2 } from "lucide-react";
+import { Chrome, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -29,6 +30,25 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+
+  async function handleGoogleSignIn() {
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+      extraParams: { prompt: "select_account" },
+    });
+    if (result.error) {
+      setError(result.error.message);
+      setBusy(false);
+      return;
+    }
+    if (!result.redirected) {
+      setBusy(false);
+      await navigate({ to: "/" });
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,6 +90,21 @@ function AuthPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             You need an account to connect GitHub. The studio owner also signs in here.
           </p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          disabled={busy}
+          onClick={handleGoogleSignIn}
+        >
+          {busy ? <Loader2 className="animate-spin" /> : <Chrome />}
+          Continue with Google
+        </Button>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground" aria-hidden="true">
+          <span className="h-px flex-1 bg-border" />
+          or use email
+          <span className="h-px flex-1 bg-border" />
         </div>
         <label className="block space-y-1.5">
           <span className="text-sm font-medium">Email</span>
