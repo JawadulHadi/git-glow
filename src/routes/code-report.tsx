@@ -3,6 +3,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { Check, Copy, Download, Loader2, ScanSearch, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GithubPublishPanel } from "@/components/github-publish-panel";
+import { GithubAccount } from "@/components/github-account";
 import { streamCodeReport } from "@/lib/code-report";
 import { parseRepoUrl } from "@/lib/sources";
 
@@ -109,6 +110,10 @@ function CodeReportPage() {
               autoComplete="current-password"
             />
           </label>
+          <GithubAccount />
+          <p className="-mt-2 text-xs text-muted-foreground">
+            With GitHub connected, reports read your repositories directly, including private ones.
+          </p>
           <label className="block space-y-2">
             <span className="text-sm font-medium">Repository link</span>
             <input
