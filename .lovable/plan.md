@@ -14,7 +14,7 @@ Replace the personal portfolio with a focused README-writing product. No public 
 - Update tests and project guidance for the new product scope.
 
 ## Verification
-- Search the shipped project for personal names, addresses, contact details, profile URLs, and Qeloma references.
+- Search the shipped project for any references to the real person or their work.
 - Run unit tests and lint checks.
 - Verify the drafting form and mobile/desktop presentation in the browser.
 - Confirm the preview build is clean.
