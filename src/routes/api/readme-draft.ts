@@ -61,6 +61,7 @@ export const Route = createFileRoute("/api/readme-draft")({
         const incomingRunId = request.headers.get(RUN_ID_HEADER)?.trim();
         if (incomingRunId) headers.set(RUN_ID_HEADER, incomingRunId);
 
+        console.error("RD before fetch");
         let upstream: Response;
         try {
           upstream = await fetch(GATEWAY_URL, {
@@ -82,6 +83,7 @@ export const Route = createFileRoute("/api/readme-draft")({
           throw error;
         }
 
+        console.error("RD after fetch", upstream.status);
         if (!upstream.ok || !upstream.body) {
           const body = await upstream.text();
           let message = `The writing service returned an error (${upstream.status}).`;
