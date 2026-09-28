@@ -9,7 +9,10 @@ export const Route = createFileRoute("/readme-studio")({
   head: () => ({
     meta: [
       { title: "README studio | Jawad Ul Hadi" },
-      { name: "description", content: "Owner tool for drafting branded repository READMEs for Jawad Ul Hadi's projects." },
+      {
+        name: "description",
+        content: "Owner tool for drafting branded repository READMEs for Jawad Ul Hadi's projects.",
+      },
       { property: "og:title", content: "README studio | Jawad Ul Hadi" },
       { property: "og:description", content: "Draft polished, on-brand repository READMEs." },
       { property: "og:type", content: "website" },
@@ -42,7 +45,11 @@ function ReadmeStudio() {
     setDraft("");
     setIsDrafting(true);
     try {
-      await streamReadmeDraft({ accessCode, repositoryName, description, existingReadme }, setDraft, controller.signal);
+      await streamReadmeDraft(
+        { accessCode, repositoryName, description, existingReadme },
+        setDraft,
+        controller.signal,
+      );
     } catch (caught) {
       if (!controller.signal.aborted) {
         setError(caught instanceof Error ? caught.message : "Something went wrong while drafting.");
@@ -61,27 +68,53 @@ function ReadmeStudio() {
   return (
     <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
       <PageIntro eyebrow="Owner tool" title="README studio">
-        Share a repository description and its current README, and get a polished draft in your brand voice. Missing
-        details are flagged, never invented.
+        Share a repository description and its current README, and get a polished draft in your
+        brand voice. Missing details are flagged, never invented.
       </PageIntro>
 
       <div className="mt-10 grid gap-8 lg:grid-cols-2">
         <form onSubmit={handleSubmit} className="glass-panel space-y-5 rounded-lg p-6">
           <label className="block space-y-2">
             <span className="text-sm font-medium">Owner access code</span>
-            <input type="password" required value={accessCode} onChange={(e) => setAccessCode(e.target.value)} className={fieldClass} autoComplete="current-password" />
+            <input
+              type="password"
+              required
+              value={accessCode}
+              onChange={(e) => setAccessCode(e.target.value)}
+              className={fieldClass}
+              autoComplete="current-password"
+            />
           </label>
           <label className="block space-y-2">
             <span className="text-sm font-medium">Repository name</span>
-            <input required value={repositoryName} onChange={(e) => setRepositoryName(e.target.value)} placeholder="qeloma-verdict" className={fieldClass} />
+            <input
+              required
+              value={repositoryName}
+              onChange={(e) => setRepositoryName(e.target.value)}
+              placeholder="qeloma-verdict"
+              className={fieldClass}
+            />
           </label>
           <label className="block space-y-2">
             <span className="text-sm font-medium">Repository description</span>
-            <textarea required rows={5} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What it does, who it's for, the stack and how it runs." className={fieldClass} />
+            <textarea
+              required
+              rows={5}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="What it does, who it's for, the stack and how it runs."
+              className={fieldClass}
+            />
           </label>
           <label className="block space-y-2">
             <span className="text-sm font-medium">Existing README (optional)</span>
-            <textarea rows={10} value={existingReadme} onChange={(e) => setExistingReadme(e.target.value)} placeholder="Paste the current README markdown here." className={`${fieldClass} font-mono text-xs`} />
+            <textarea
+              rows={10}
+              value={existingReadme}
+              onChange={(e) => setExistingReadme(e.target.value)}
+              placeholder="Paste the current README markdown here."
+              className={`${fieldClass} font-mono text-xs`}
+            />
           </label>
           <div className="flex gap-3">
             <Button type="submit" disabled={isDrafting}>
@@ -89,27 +122,48 @@ function ReadmeStudio() {
               {isDrafting ? "Drafting…" : "Draft README"}
             </Button>
             {isDrafting && (
-              <Button type="button" variant="outline" onClick={() => controllerRef.current?.abort()}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => controllerRef.current?.abort()}
+              >
                 <Square /> Stop
               </Button>
             )}
           </div>
-          {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
+          {error && (
+            <p className="text-sm text-destructive" role="alert">
+              {error}
+            </p>
+          )}
         </form>
 
-        <section className="glass-panel flex min-h-96 flex-col rounded-lg p-6" aria-label="Draft README">
+        <section
+          className="glass-panel flex min-h-96 flex-col rounded-lg p-6"
+          aria-label="Draft README"
+        >
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-display text-lg font-semibold">Draft</h2>
-            <Button type="button" variant="outline" size="sm" disabled={!draft || isDrafting} onClick={handleCopy}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={!draft || isDrafting}
+              onClick={handleCopy}
+            >
               {copied ? <Check /> : <Copy />}
               {copied ? "Copied" : "Copy markdown"}
             </Button>
           </div>
           {draft ? (
-            <pre className="flex-1 overflow-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-foreground/90">{draft}</pre>
+            <pre className="flex-1 overflow-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-foreground/90">
+              {draft}
+            </pre>
           ) : (
             <p className="text-sm text-muted-foreground">
-              {isDrafting ? "Thinking through the structure…" : "Your drafted README will appear here."}
+              {isDrafting
+                ? "Thinking through the structure…"
+                : "Your drafted README will appear here."}
             </p>
           )}
         </section>
