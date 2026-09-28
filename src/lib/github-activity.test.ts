@@ -1,13 +1,28 @@
 import { describe, expect, test } from "bun:test";
-import { activityLevel, buildActivityDays, formatEuropeanDate, type GithubEvent } from "./github-activity";
+import {
+  activityLevel,
+  buildActivityDays,
+  formatEuropeanDate,
+  type GithubEvent,
+} from "./github-activity";
 
 describe("GitHub activity utilities", () => {
   test("groups events by UTC date", () => {
     const date = new Date();
     date.setUTCHours(12, 0, 0, 0);
     const events: GithubEvent[] = [
-      { id: "1", type: "PushEvent", created_at: date.toISOString(), repo: { name: "Qeloma/qeloma-verdict" } },
-      { id: "2", type: "IssuesEvent", created_at: date.toISOString(), repo: { name: "Qeloma/qeloma-ocr" } },
+      {
+        id: "1",
+        type: "PushEvent",
+        created_at: date.toISOString(),
+        repo: { name: "Qeloma/qeloma-verdict" },
+      },
+      {
+        id: "2",
+        type: "IssuesEvent",
+        created_at: date.toISOString(),
+        repo: { name: "Qeloma/qeloma-ocr" },
+      },
     ];
     const days = buildActivityDays(events, 1);
     expect(days).toHaveLength(1);

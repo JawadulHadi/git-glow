@@ -14,21 +14,21 @@ I design and deliver backend platforms where service boundaries, data architectu
 
 ## Selected public projects
 
-| Project | What it demonstrates |
-| --- | --- |
-| [Qeloma Verdict](https://github.com/Qeloma/qeloma-verdict) | Domain-agnostic decisions with tamper-evident reasoning receipts |
-| [Qeloma OCR](https://github.com/Qeloma/qeloma-ocr) | Client-side OCR with per-word confidence |
-| [Qeloma Lens Studio](https://github.com/Qeloma/qeloma_lens_studio) | Document understanding with AI capabilities and deterministic fallbacks |
-| [Qeloma Voice Studio](https://github.com/Qeloma/qeloma_voice_studio) | Grounded, real-time voice analysis over private documents |
+| Project                                                              | What it demonstrates                                                    |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Qeloma Verdict](https://github.com/Qeloma/qeloma-verdict)           | Domain-agnostic decisions with tamper-evident reasoning receipts        |
+| [Qeloma OCR](https://github.com/Qeloma/qeloma-ocr)                   | Client-side OCR with per-word confidence                                |
+| [Qeloma Lens Studio](https://github.com/Qeloma/qeloma_lens_studio)   | Document understanding with AI capabilities and deterministic fallbacks |
+| [Qeloma Voice Studio](https://github.com/Qeloma/qeloma_voice_studio) | Grounded, real-time voice analysis over private documents               |
 
 ## Architecture themes
 
-| Area | Focus |
-| --- | --- |
-| Backend architecture | Service boundaries, multi-tenancy, API contracts, event workflows |
-| AI systems | Model abstraction, retrieval pipelines, structured generation, agent patterns |
-| Reliability | Retry logic, deterministic fallback, safe migrations, operational resilience |
-| Performance | Indexing, query tuning, caching, queue processing, latency reduction |
+| Area                 | Focus                                                                         |
+| -------------------- | ----------------------------------------------------------------------------- |
+| Backend architecture | Service boundaries, multi-tenancy, API contracts, event workflows             |
+| AI systems           | Model abstraction, retrieval pipelines, structured generation, agent patterns |
+| Reliability          | Retry logic, deterministic fallback, safe migrations, operational resilience  |
+| Performance          | Indexing, query tuning, caching, queue processing, latency reduction          |
 
 ## Selected impact
 

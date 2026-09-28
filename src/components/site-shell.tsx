@@ -27,7 +27,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
             </span>
             <span className="leading-tight">
               <span className="block font-display text-sm font-semibold">Jawad Ul Hadi</span>
-              <span className="block font-mono text-[10px] text-muted-foreground">Backend Lead Engineer</span>
+              <span className="block font-mono text-[10px] text-muted-foreground">
+                Backend Lead Engineer
+              </span>
             </span>
           </Link>
 
@@ -46,7 +48,12 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="hidden md:block">
-            <Button asChild variant="outline" size="sm" className="button-sweep border-border bg-card/60">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="button-sweep border-border bg-card/60"
+            >
               <a href={githubProfileUrl} target="_blank" rel="noreferrer">
                 GitHub <ArrowUpRight aria-hidden="true" />
               </a>
@@ -65,7 +72,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </Button>
         </div>
         {menuOpen ? (
-          <nav className="border-t border-border bg-background px-5 py-4 md:hidden" aria-label="Mobile navigation">
+          <nav
+            className="border-t border-border bg-background px-5 py-4 md:hidden"
+            aria-label="Mobile navigation"
+          >
             {navigation.map((item) => (
               <Link
                 key={item.to}
@@ -85,9 +95,23 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-7 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <span>© 2026 Jawad Ul Hadi · Backend Lead Engineer</span>
           <div className="flex gap-5">
-            <a className="transition-colors hover:text-foreground" href={githubProfileUrl} target="_blank" rel="noreferrer">GitHub</a>
-            <a className="transition-colors hover:text-foreground" href="mailto:jawadulhadicc@gmail.com">Email</a>
-            <Link className="transition-colors hover:text-foreground" to="/contact">Contact</Link>
+            <a
+              className="transition-colors hover:text-foreground"
+              href={githubProfileUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
+            <a
+              className="transition-colors hover:text-foreground"
+              href="mailto:jawadulhadicc@gmail.com"
+            >
+              Email
+            </a>
+            <Link className="transition-colors hover:text-foreground" to="/contact">
+              Contact
+            </Link>
           </div>
         </div>
       </footer>

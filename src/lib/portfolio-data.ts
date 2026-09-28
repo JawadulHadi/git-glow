@@ -45,7 +45,10 @@ export const projects: Project[] = [
 
 export const capabilities = [
   ["Backend architecture", "Service boundaries, multi-tenancy, API contracts, event workflows"],
-  ["AI systems", "Provider abstraction, retrieval pipelines, structured generation, agent patterns"],
+  [
+    "AI systems",
+    "Provider abstraction, retrieval pipelines, structured generation, agent patterns",
+  ],
   ["Reliability", "Retry logic, deterministic fallback, safe migrations, operational resilience"],
   ["Performance", "Indexing, query tuning, caching, queues, latency reduction"],
 ] as const;
