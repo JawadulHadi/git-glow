@@ -4,7 +4,7 @@ Build a GitHub profile aligned with current trends for a backend lead engineer. 
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://repo-radiance-forge.lovable.app
+**Live app**: [https://repo-radiance-forge.lovable.app](https://repo-glow-io.lovable.app/)
 
 ## Build with Lovable
 
