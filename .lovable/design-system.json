@@ -1,0 +1,494 @@
+{
+  "meta": {
+    "name": "git-glow",
+    "package": "@ws-dd22e65cc6700b88943b/0262afb3-0be5-444f-b88d-f5cea9230e81",
+    "version": "1.0.0",
+    "framework": "react",
+    "css_framework": "tailwind",
+    "starter_template": "custom_design_system_tailwind",
+    "theme_files": [
+      "src/styles.css"
+    ],
+    "source_type": "local",
+    "source_manifest": {
+      "#enrichment": "959f14b924a4a8447cc0c7875c108e84879391fa0fa02aa0582358e951389353",
+      ".gitignore": "6d9e901a692b46a83707c245fb03bc91",
+      ".lovable/plan/code-report-and-github-publishing-2026-09-28.md": "a7605ce12ba71cfc6322612b15d93c20",
+      ".lovable/plan/github-sign-in-for-visitors-and-an-owner-panel-2026-09-28.md": "2f5d2a6d5bd2e6211792791a4fe66235",
+      ".lovable/plan/visitor-analytics-and-live-github-publishing-2026-09-28.md": "0d0588b9fa30eaca835a36527e31e20e",
+      ".lovable/project.json": "51a90576cd97762828b128ea584e5780",
+      ".prettierignore": "7279a476f196a2da5f7edd18db568dc6",
+      ".prettierrc": "185ef0234746ab738ac1ab6cec5e2bd9",
+      "AGENTS.md": "777837ead0250a1389aee5d270a341f1",
+      "README.md": "e93a6c1e8d76e35c272c1fad3c09f3e5",
+      "bunfig.toml": "89115995d9de72fdfc894e16b1e75297",
+      "components.json": "30d3d035361ce807021f5c54620962e9",
+      "docs/code-report.md": "a4c4d9c90718a75663ab458238fd315b",
+      "docs/overview.md": "75232efaea174a5298b0480d17600184",
+      "docs/privacy-and-limits.md": "0460b7b38e4c1644c34d7189dc8afc06",
+      "docs/product-review.md": "25012c99a4e2aedad50ecee3a5326109",
+      "docs/publishing.md": "726e897822851e96db752e5aa646acfc",
+      "eslint.config.js": "345bdd57e188e0e4525edcd00e5003f5",
+      "package.json": "662eeb812b414e5bcfec5d67193dcbd8",
+      "public/favicon.svg": "46a782bff7c5b0a9242d1eea81841270",
+      "public/robots.txt": "f9dff89adf98833e676de2205921996a",
+      "roadmap.md": "ec019fb4ddfc023248f65a2a82a2b42c",
+      "src/components/github-account.tsx": "ef0dd8a37e7efa8c727d6bce5fcadd1a",
+      "src/components/github-publish-panel.tsx": "1ad994b7572cdb272d3c2021dcc5aa52",
+      "src/components/readme-studio.tsx": "c2897aa911bbe0cd98820849e184b998",
+      "src/components/site-shell.tsx": "20ca3c71933065d7d40e0769d1c7481e",
+      "src/components/ui/accordion.tsx": "55f9dda62b4e3913c9b23e5015a86aef",
+      "src/components/ui/alert-dialog.tsx": "96350e949e9b7b674545430a410ab89c",
+      "src/components/ui/alert.tsx": "f993d7e96b1e25ce50e68ed97e11d2a8",
+      "src/components/ui/aspect-ratio.tsx": "c5c364545e1b25a94e9e752cd67ad048",
+      "src/components/ui/avatar.tsx": "72989cd32f72c4122802540ef32525a5",
+      "src/components/ui/badge.tsx": "81cade001fc4260f9943e18dcd79449b",
+      "src/components/ui/breadcrumb.tsx": "bb9ac254f12662b20d5d50b84308bf3a",
+      "src/components/ui/button.tsx": "7d07d520f486b12bd47373d694ecd2ee",
+      "src/components/ui/calendar.tsx": "d849cc610e2683271f3f1c47d093cf30",
+      "src/components/ui/card.tsx": "d6c48ea36221b9cdc3576d305d12d5d5",
+      "src/components/ui/carousel.tsx": "e324c68ae00cd5aed49317638abd429a",
+      "src/components/ui/chart.tsx": "6a3baf94f2e89f1f97d4d7a28f3622d2",
+      "src/components/ui/checkbox.tsx": "f78aac270ca482c8c2cb907ef6260462",
+      "src/components/ui/collapsible.tsx": "767631bbc344945c236f185f4078d71d",
+      "src/components/ui/command.tsx": "014782599cc838b021ec68b07ad4ea02",
+      "src/components/ui/context-menu.tsx": "3ba8244ea23df34a1dba92f3a1230dad",
+      "src/components/ui/dialog.tsx": "ef4fe8e7de8675730afe3d633b260e09",
+      "src/components/ui/drawer.tsx": "8be333e8fd8e42576b1b5f72f07f4337",
+      "src/components/ui/dropdown-menu.tsx": "28d6e98d3c7811fc0514bfa69416f087",
+      "src/components/ui/form.tsx": "1b0aa6302b9017ea2a1307c22a1d2983",
+      "src/components/ui/hover-card.tsx": "1442794c5ca2a78d69e4e613b315ed3d",
+      "src/components/ui/input-otp.tsx": "65625f2f1c4d731a760aeed7b54459d1",
+      "src/components/ui/input.tsx": "1d4cc52a4cd8afb3e18e45bda942bb8a",
+      "src/components/ui/label.tsx": "7e35df4ca8edd0835efd97ca7937ef92",
+      "src/components/ui/menubar.tsx": "3c4121a1e78d3f424a7295381a8997d3",
+      "src/components/ui/navigation-menu.tsx": "e85351147a02b29577ff83d188b63c24",
+      "src/components/ui/pagination.tsx": "fac6cdbb4bbf78b273d85cd36d6cbb49",
+      "src/components/ui/popover.tsx": "f18aa1da2144f25ee60795c539c51bcd",
+      "src/components/ui/progress.tsx": "55c462e5c9dd678dcf2c0c510b014ac4",
+      "src/components/ui/radio-group.tsx": "0e1ace237a5da3197e3eb1e6683faba9",
+      "src/components/ui/resizable.tsx": "d9fcb9203c749fcab4e125a99bb12a86",
+      "src/components/ui/scroll-area.tsx": "87b65d3eb26f2b02ff35a7acea585ba5",
+      "src/components/ui/select.tsx": "31ea1bbd6671833b010b2e852c8a55d0",
+      "src/components/ui/separator.tsx": "433d163c4ffa00b59398a0c293198b5e",
+      "src/components/ui/sheet.tsx": "0221fbf97b69611b47fcbc10bb27669a",
+      "src/components/ui/sidebar.tsx": "83c1623eb50ebc370d7b1b84a542e369",
+      "src/components/ui/skeleton.tsx": "41b182e6e2fc3805960d41e767d4a972",
+      "src/components/ui/slider.tsx": "4752f1bfa26426988d325599e01c335b",
+      "src/components/ui/sonner.tsx": "97f59f60be3413196d095fcbf7383216",
+      "src/components/ui/switch.tsx": "82f5d8b0c59bb7ff305caa9f502e79ff",
+      "src/components/ui/table.tsx": "7cc889989d53894b659903c73aded96e",
+      "src/components/ui/tabs.tsx": "56e725558c2ce72c18243bf51717f385",
+      "src/components/ui/textarea.tsx": "c7aad96fb9545210d53135a96c76ed6b",
+      "src/components/ui/toggle-group.tsx": "ac26383acf721d116ca8e3ab5c5355d5",
+      "src/components/ui/toggle.tsx": "ee8c5adac74e7242b85b544db1a8fbad",
+      "src/components/ui/tooltip.tsx": "67d71db5a1ab935695d1def497f5b8a6",
+      "src/hooks/use-mobile.tsx": "c0a0bdd4638c391a1dd06ac82074e60b",
+      "src/hooks/use-session.ts": "22d93da8b526076611289ef056399f86",
+      "src/hooks/use-studio-visit.ts": "24127d618f0b58d83ee4c0d67c973d4e",
+      "src/integrations/lovable/appUserConnector.ts": "7996db088b627da3b675719bfc6b9b6f",
+      "src/integrations/lovable/index.ts": "e9cf6e6968dd0392b2222ee0745ecece",
+      "src/integrations/supabase/auth-attacher.ts": "a1347245a102b51d9e2f2796ab806dc5",
+      "src/integrations/supabase/auth-middleware.ts": "9877e7a04523e50505df8c4b1eb8dbf9",
+      "src/integrations/supabase/client.server.ts": "6f3a33a5b0a7884940926c338ae7b4af",
+      "src/integrations/supabase/client.ts": "a7c3a90dac3ae307af2359a87dec88e5",
+      "src/integrations/supabase/cron-auth.ts": "d05be20476d3287ad487690a4cf98029",
+      "src/integrations/supabase/previewAuthStorage.ts": "0a2d63e049bc63135b19c8e21cc0b1aa",
+      "src/integrations/supabase/types.ts": "054cdd8e119202da869b8009fd356c43",
+      "src/lib/ai-stream.server.ts": "07c7a77b171a8df423d62b9b15bea460",
+      "src/lib/analytics.functions.ts": "7cbd26f26cd65b59a1d740a4ebf1af71",
+      "src/lib/app-docs.ts": "6f822f8261f66d526cc1fac950513627",
+      "src/lib/app-user-connections.server.ts": "a69d40b2044b12105f191141d9e2c877",
+      "src/lib/auth-header.ts": "1443e4ef64454b15a36451ab7c6fdc61",
+      "src/lib/brand.ts": "250200f481eaf9522207d8dfb5c15878",
+      "src/lib/code-report.ts": "56d2a7b0e5c39af82fd82622f3d5dde8",
+      "src/lib/collect.server.ts": "f2c24da617ec872ec290b0b590110c73",
+      "src/lib/error-capture.ts": "f630d9686a9a989170f22eff4de7b30d",
+      "src/lib/error-page.ts": "8da0ddd7569bac2676b9a5c8edff8a36",
+      "src/lib/github-account.functions.ts": "99ab8b25d165547df9a2fb2cb0afbf58",
+      "src/lib/github-gateway.server.ts": "03371be5a47feb322276a2c8db45b835",
+      "src/lib/lovable-error-reporting.ts": "0367e03b7d71917510e4dc1cdae172ec",
+      "src/lib/owner.functions.ts": "a235f1f55aa2c2a50863d06fee33eb81",
+      "src/lib/publish.ts": "0f225b5fd3d584b6449316e660287bae",
+      "src/lib/readme-draft.test.ts": "e66a3a9113936837753a0bb40c9cd240",
+      "src/lib/readme-draft.ts": "dc5a76897ee554c18375de2cbc825da3",
+      "src/lib/request-user.server.ts": "88ca5af9547c49fc2a73ccc9306a65f9",
+      "src/lib/sources.ts": "7dd70f6931031aebdedb86e0b078f421",
+      "src/lib/studio-settings.server.ts": "b8aa016e7d802a612055c9b51026495e",
+      "src/lib/studio-settings.test.ts": "e3b1a56e50a3aca7413233d3cfa2809d",
+      "src/lib/studio.test.ts": "13bf106cfc8763b214a486690e118345",
+      "src/lib/utils.ts": "d9837f38cc05303254571985e3164050",
+      "src/routeTree.gen.ts": "8792ccb092360ed05c5c4230ec8794f8",
+      "src/router.tsx": "8f905e713b0eba7fa8148b7995a708c9",
+      "src/routes/README.md": "0044790c298aeb33868a7525d79f1585",
+      "src/routes/__root.tsx": "6e192d5d5c55083037083606018926c8",
+      "src/routes/_authenticated/owner.tsx": "f15b073d2ff788817c3cf01cbeb27c7f",
+      "src/routes/_authenticated/route.tsx": "cfef1e67d3830b63f600a6d3d70ea3c4",
+      "src/routes/api/code-report.ts": "1e09b9d06c53e5d14b0bcc1015d11fe8",
+      "src/routes/api/github-publish.ts": "fade7bd75e5cdb7f5ab4355f8690152a",
+      "src/routes/api/readme-draft.ts": "546c6ac0373240a6e0b29bb0b620ec0f",
+      "src/routes/auth.tsx": "abfb8365d64a5e51a31bf1211c9420ac",
+      "src/routes/code-report.tsx": "1522936220e94299acd9b6b9b528432f",
+      "src/routes/index.tsx": "8736acefd252af7ad3fa947ebe92270f",
+      "src/routes/oauth/github/return.tsx": "40b3d1d46fc99210be1d73fd124676a6",
+      "src/routes/readme-studio.tsx": "339fafc3546da3614a661bc906fd21f7",
+      "src/server.ts": "c7bbc49bb70e318af618d92775ee0f27",
+      "src/start.ts": "d77c1c12904be5077c6955d9b30071af",
+      "src/styles.css": "b78e1a981a5a2345cd56c28a4fae6315",
+      "supabase/config.toml": "7071ceec94200a6c0b504d58fe21bb37",
+      "supabase/migrations/20260928210146_24095fcf-70a5-4887-b818-3c1b437d57a0.sql": "686d9623339346b9405744aa223599ec",
+      "supabase/migrations/20260928210209_b3276cea-3d44-4811-830a-95021d0508c7.sql": "0140f7987ba3eace9c820320563177c1",
+      "supabase/migrations/20260928214137_7fa41e40-ba5c-413b-9fcb-093fea1863a7.sql": "0b2efc8a6d97aeb596402eb386c86bb8",
+      "supabase/migrations/20260928214200_1880f2cd-6702-4d8a-aec8-d60e5bf41216.sql": "b104569d6c17c431428a3d7392debed2",
+      "tsconfig.json": "e84e5c7fe88e3c5a4d54f55a816d42c1",
+      "vite.config.ts": "d67e8217e5f31b87c276b6357c9aedcf"
+    },
+    "pipeline_version": 8
+  },
+  "tokens": {
+    "color": [
+      {
+        "name": "--background",
+        "raw": "oklch(0.14 0.024 258)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--foreground",
+        "raw": "oklch(0.95 0.012 247)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--card",
+        "raw": "oklch(0.19 0.029 258 / 72%)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--card-foreground",
+        "raw": "oklch(0.95 0.012 247)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--popover",
+        "raw": "oklch(0.18 0.029 258)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--popover-foreground",
+        "raw": "oklch(0.95 0.012 247)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--primary",
+        "raw": "oklch(0.72 0.15 240)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--primary-foreground",
+        "raw": "oklch(0.14 0.024 258)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--secondary",
+        "raw": "oklch(0.23 0.028 256)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--secondary-foreground",
+        "raw": "oklch(0.95 0.012 247)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--muted",
+        "raw": "oklch(0.23 0.028 256)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--muted-foreground",
+        "raw": "oklch(0.69 0.037 251)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--accent",
+        "raw": "oklch(0.67 0.12 220)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--accent-foreground",
+        "raw": "oklch(0.13 0.024 258)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--destructive",
+        "raw": "oklch(0.577 0.245 27.325)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--destructive-foreground",
+        "raw": "oklch(0.984 0.003 247.858)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--border",
+        "raw": "oklch(0.33 0.031 256 / 70%)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--input",
+        "raw": "oklch(0.3 0.031 256)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--ring",
+        "raw": "oklch(0.72 0.15 240)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-1",
+        "raw": "oklch(0.646 0.222 41.116)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-2",
+        "raw": "oklch(0.6 0.118 184.704)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-3",
+        "raw": "oklch(0.398 0.07 227.392)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-4",
+        "raw": "oklch(0.828 0.189 84.429)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-5",
+        "raw": "oklch(0.769 0.188 70.08)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar",
+        "raw": "oklch(0.984 0.003 247.858)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-foreground",
+        "raw": "oklch(0.129 0.042 264.695)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-primary",
+        "raw": "oklch(0.208 0.042 265.755)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-primary-foreground",
+        "raw": "oklch(0.984 0.003 247.858)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-accent",
+        "raw": "oklch(0.968 0.007 247.896)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-accent-foreground",
+        "raw": "oklch(0.208 0.042 265.755)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-border",
+        "raw": "oklch(0.929 0.013 255.508)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-ring",
+        "raw": "oklch(0.704 0.04 256.788)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--surface",
+        "raw": "oklch(0.17 0.027 258 / 72%)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--success",
+        "raw": "oklch(0.76 0.14 163)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--activity-0",
+        "raw": "oklch(0.22 0.028 256)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--activity-1",
+        "raw": "oklch(0.35 0.09 239)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--activity-2",
+        "raw": "oklch(0.49 0.13 239)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--activity-3",
+        "raw": "oklch(0.62 0.15 239)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--activity-4",
+        "raw": "oklch(0.74 0.16 230)",
+        "source": "src/styles.css"
+      }
+    ],
+    "typography": [
+      {
+        "name": "--font-sans",
+        "raw": "\"Geist\", sans-serif",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--font-display",
+        "raw": "\"Geist\", sans-serif",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--font-mono",
+        "raw": "\"IBM Plex Mono\", monospace",
+        "source": "src/styles.css"
+      }
+    ],
+    "radius": [
+      {
+        "name": "--radius-sm",
+        "raw": "calc(var(--radius) - 4px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-md",
+        "raw": "calc(var(--radius) - 2px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-xl",
+        "raw": "calc(var(--radius) + 4px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-2xl",
+        "raw": "calc(var(--radius) + 8px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-3xl",
+        "raw": "calc(var(--radius) + 12px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-4xl",
+        "raw": "calc(var(--radius) + 16px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius",
+        "raw": "0.5rem",
+        "source": "src/styles.css"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "GithubAccount",
+      "file": "src/components/github-account",
+      "import_path": ""
+    },
+    {
+      "name": "GithubPublishPanel",
+      "file": "src/components/github-publish-panel",
+      "import_path": "",
+      "props": [
+        {
+          "name": "accessCode",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "readme",
+          "type": "string"
+        },
+        {
+          "name": "files",
+          "type": "any"
+        }
+      ]
+    },
+    {
+      "name": "ReadmeStudio",
+      "file": "src/components/readme-studio",
+      "import_path": ""
+    },
+    {
+      "name": "SiteShell",
+      "file": "src/components/site-shell",
+      "import_path": ""
+    },
+    {
+      "name": "Button",
+      "file": "src/components/ui/button",
+      "import_path": "",
+      "props": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "values": [
+            "default",
+            "destructive",
+            "outline",
+            "secondary",
+            "ghost",
+            "link"
+          ],
+          "default": "default"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "values": [
+            "default",
+            "sm",
+            "lg",
+            "icon"
+          ],
+          "default": "default"
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "file": "src/components/ui/checkbox",
+      "import_path": ""
+    },
+    {
+      "name": "Constants",
+      "file": "src/integrations/supabase/types",
+      "import_path": ""
+    }
+  ]
+}
