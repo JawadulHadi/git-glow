@@ -24,3 +24,9 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+<p align="center" style="font-family: system-ui, sans-serif; color: #333; line-height: 1.6;">
+  Built by <strong>Jawad Ul Hadi</strong> | Backend Lead &amp; Architect — AI-First Systems Design &amp; Generative AI · 
+  <a href="https://gravatar.com/juhbukhari" target="_blank" rel="noopener noreferrer" style="color: #0066cc; text-decoration: none; font-weight: 500;">Let's Connect</a>
+</p>
+
